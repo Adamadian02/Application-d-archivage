@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block title %}Upload Document — GED{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'liste_documents' %}">Documents</a></li>
+<li class="breadcrumb-item active">Upload</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Uploader un document</h1>
+    <p class="page-subtitle">Ajoutez un nouveau document à l'archive</p>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+      {% csrf_token %}
+
+      <!-- Upload zone -->
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title"><i class="bi bi-cloud-upload me-2 text-primary"></i>Fichier</span></div>
+        <div class="card-body">
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+            <p class="upload-text">Glissez votre fichier ici ou cliquez pour choisir</p>
+            <p class="upload-sub">PDF, Word, Excel, PowerPoint, Images — Max 50 MB</p>
+          </div>
+          {{ form.fichier }}
+          <!-- Progress bar -->
+          <div id="upload-progress-wrap" class="d-none mt-3">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span class="text-sm">Téléchargement en cours...</span>
+              <span class="text-sm" id="progress-pct">0%</span>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" id="upload-progress" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Métadonnées -->
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title"><i class="bi bi-info-circle me-2 text-primary"></i>Métadonnées</span></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Titre <span class="text-danger">*</span></label>
+              {{ form.titre }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              {{ form.description }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Catégorie</label>
+              {{ form.categorie }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Niveau de confidentialité</label>
+              {{ form.confidentialite }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Tags</label>
+              {{ form.tags_input }}
+              <div class="text-xs text-muted mt-1"><i class="bi bi-info-circle me-1"></i>Séparez les tags par des virgules</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 justify-content-end">
+        <a href="{% url 'liste_documents' %}" class="btn btn-outline">Annuler</a>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Uploader le document</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Info sidebar -->
+  <div class="col-12 col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header"><span class="card-title"><i class="bi bi-shield-lock me-2 text-primary"></i>Niveaux de confidentialité</span></div>
+      <div class="card-body">
+        <div class="d-flex flex-column gap-3">
+          <div>
+            <span class="badge-custom badge-public mb-1">Public</span>
+            <p class="text-xs text-muted mb-0">Accessible à tous les utilisateurs</p>
+          </div>
+          <div>
+            <span class="badge-custom badge-interne mb-1">Interne</span>
+            <p class="text-xs text-muted mb-0">Réservé au personnel de l'université</p>
+          </div>
+          <div>
+            <span class="badge-custom badge-confidentiel mb-1">Confidentiel</span>
+            <p class="text-xs text-muted mb-0">Accès restreint, personnel autorisé</p>
+          </div>
+          <div>
+            <span class="badge-custom badge-secret mb-1">Secret</span>
+            <p class="text-xs text-muted mb-0">Niveau maximal, direction uniquement</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="bi bi-file-earmark me-2 text-primary"></i>Formats acceptés</span></div>
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge bg-danger bg-opacity-10 text-danger">PDF</span>
+          <span class="badge bg-primary bg-opacity-10 text-primary">DOC/DOCX</span>
+          <span class="badge bg-success bg-opacity-10 text-success">XLS/XLSX</span>
+          <span class="badge bg-warning bg-opacity-10 text-warning">PNG/JPG</span>
+          <span class="badge bg-secondary bg-opacity-10 text-secondary">PPT/PPTX</span>
+        </div>
+        <p class="text-xs text-muted mt-2 mb-0">Taille maximale : 50 MB par fichier</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

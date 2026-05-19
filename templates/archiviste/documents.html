@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Gestion des Documents — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Mes Documents</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Gestion des Documents</h1>
+    <p class="page-subtitle">{{ documents.count }} document(s) trouvé(s)</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'upload_document' %}" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Uploader</a>
+  </div>
+</div>
+
+<!-- Filtres -->
+<div class="card mb-3">
+  <div class="card-body" style="padding:16px 20px;">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-12 col-md-4">
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Rechercher...">
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <select name="categorie" class="form-select">
+          <option value="">Toutes catégories</option>
+          {% for cat in categories %}<option value="{{ cat.id }}" {% if cat_filter == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <select name="confidentialite" class="form-select">
+          <option value="">Confidentialité</option>
+          <option value="public" {% if conf_filter == "public" %}selected{% endif %}>Public</option>
+          <option value="interne" {% if conf_filter == "interne" %}selected{% endif %}>Interne</option>
+          <option value="confidentiel" {% if conf_filter == "confidentiel" %}selected{% endif %}>Confidentiel</option>
+          <option value="secret" {% if conf_filter == "secret" %}selected{% endif %}>Secret</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel"></i> Filtrer</button>
+      </div>
+      <div class="col-6 col-md-2">
+        <a href="{% url 'liste_documents' %}" class="btn btn-outline w-100"><i class="bi bi-x"></i> Réinitialiser</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="table-container">
+  {% if documents %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th><input type="checkbox" class="form-check-input"></th>
+          <th>Document</th>
+          <th>Catégorie</th>
+          <th>Confidentialité</th>
+          <th>Statut</th>
+          <th>Date</th>
+          <th>Taille</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in documents %}
+        <tr>
+          <td><input type="checkbox" class="form-check-input"></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <i class="{{ doc.get_icon }}" style="font-size:20px;"></i>
+              <div>
+                <div class="fw-500">{{ doc.titre|truncatechars:40 }}</div>
+                {% if doc.tags.exists %}
+                  <div class="mt-1">{% for tag in doc.tags.all %}<span class="badge bg-light text-secondary border me-1" style="font-size:10px;">{{ tag.nom }}</span>{% endfor %}</div>
+                {% endif %}
+              </div>
+            </div>
+          </td>
+          <td>{% if doc.categorie %}<span class="text-sm">{{ doc.categorie.nom }}</span>{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
+          <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
+          <td><span class="text-sm">{{ doc.created_at|date:"d/m/Y" }}</span></td>
+          <td><span class="text-sm text-muted">{{ doc.get_taille }}</span></td>
+          <td>
+            <div class="table-actions">
+              <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Voir"><i class="bi bi-eye"></i></a>
+              <a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Télécharger"><i class="bi bi-download"></i></a>
+              <a href="{% url 'modifier_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Modifier"><i class="bi bi-pencil"></i></a>
+              {% if doc.statut == 'actif' %}
+              <a href="{% url 'archiver_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Archiver" data-confirm="Archiver ce document ?"><i class="bi bi-archive"></i></a>
+              {% endif %}
+              <a href="{% url 'supprimer_document' doc.pk %}" class="btn btn-outline btn-sm text-danger" data-bs-toggle="tooltip" title="Supprimer"><i class="bi bi-trash"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-icon"><i class="bi bi-folder2-open"></i></div>
+      <div class="empty-title">Aucun document trouvé</div>
+      <div class="empty-text">{% if query %}Aucun résultat pour "{{ query }}"{% else %}Uploadez votre premier document{% endif %}</div>
+      <a href="{% url 'upload_document' %}" class="btn btn-primary mt-3"><i class="bi bi-cloud-upload"></i> Uploader</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

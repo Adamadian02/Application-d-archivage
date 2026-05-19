@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Historique Système — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Historique Système</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Historique Système</h1><p class="page-subtitle">Journal complet des activités</p></div>
+  <div class="page-actions">
+    <form method="get" class="d-flex gap-2">
+      <select name="action" class="form-select" style="width:200px;" onchange="this.form.submit()">
+        <option value="">Toutes les actions</option>
+        {% for value, label in action_choices %}<option value="{{ value }}" {% if action_filter == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon stat-icon-blue"><i class="bi bi-activity"></i></div><div><div class="stat-value">{{ logs.count }}</div><div class="stat-label">Total activités</div></div></div></div>
+  <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-icon stat-icon-green"><i class="bi bi-cloud-upload"></i></div><div><div class="stat-value">{{ logs|length }}</div><div class="stat-label">Uploads</div></div></div></div>
+</div>
+
+<div class="table-container">
+  <table class="table mb-0">
+    <thead><tr><th>Utilisateur</th><th>Action</th><th>Description</th><th>IP</th><th>Date</th></tr></thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:30px;height:30px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#1e40af;">{{ log.utilisateur.first_name|first|upper }}{{ log.utilisateur.last_name|first|upper }}</div><span class="text-sm fw-500">{{ log.utilisateur.get_full_name|default:log.utilisateur.username|default:"Système" }}</span></div></td>
+        <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:28px;height:28px;border-radius:7px;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:13px;"><i class="{{ log.get_icon }}"></i></div><span class="text-sm">{{ log.get_action_display }}</span></div></td>
+        <td><span class="text-sm text-muted">{{ log.description|truncatechars:60 }}</span></td>
+        <td><span class="text-xs text-muted">{{ log.ip_address|default:"—" }}</span></td>
+        <td><span class="text-xs text-muted">{{ log.created_at|date:"d/m/Y H:i" }}</span></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5"><div class="empty-state"><div class="empty-icon"><i class="bi bi-clock-history"></i></div><div class="empty-title">Aucune activité</div></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

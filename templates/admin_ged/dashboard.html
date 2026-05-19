@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Administrateur — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Dashboard</li>{% endblock %}
+
+{% block content %}
+
+{{ mois_labels|json_script:"mois-labels" }}
+{{ mois_data|json_script:"mois-data" }}
+{{ conf_pct|json_script:"conf-pct" }}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Tableau de bord</h1>
+    <p class="page-subtitle">Vue d'ensemble du système de gestion documentaire</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'recherche_documents' %}" class="btn btn-outline"><i class="bi bi-search"></i> Rechercher</a>
+    <a href="{% url 'consultation_archives' %}" class="btn btn-primary"><i class="bi bi-archive"></i> Archives</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-blue"><i class="bi bi-file-earmark-text"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.total_docs }}</div>
+        <div class="stat-label">Documents archivés</div>
+        <div class="stat-change {% if stats.docs_ce_mois > 0 %}up{% endif %}">
+          {% if stats.docs_ce_mois > 0 %}<i class="bi bi-arrow-up-short"></i>+{{ stats.docs_ce_mois }} ce mois{% else %}Aucun ce mois{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-green"><i class="bi bi-people"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.total_users }}</div>
+        <div class="stat-label">Utilisateurs actifs</div>
+        <div class="stat-change" style="color:#64748b;">{{ stats.archivistes }} archiviste(s)</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-purple"><i class="bi bi-cloud-check"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.docs_ce_mois }}</div>
+        <div class="stat-label">Uploads ce mois</div>
+        <div class="stat-change up"><i class="bi bi-check-circle"></i> Actif</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-xl-3">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-orange"><i class="bi bi-shield-check"></i></div>
+      <div>
+        <div class="stat-value">98%</div>
+        <div class="stat-label">Disponibilité système</div>
+        <div class="stat-change up"><i class="bi bi-check-circle"></i> Opérationnel</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-12 col-lg-8">
+    <div class="card h-100">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-bar-chart me-2 text-primary"></i>Évolution des documents</span>
+        <span class="badge-custom badge-interne">6 derniers mois</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container"><canvas id="docsChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-pie-chart me-2 text-primary"></i>Répartition</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container" style="height:180px;"><canvas id="typeChart"></canvas></div>
+        <div class="mt-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-sm"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#2563eb;margin-right:6px;"></span>Public</span>
+            <span class="fw-600 text-sm" id="pct-public">0%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-sm"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#10b981;margin-right:6px;"></span>Interne</span>
+            <span class="fw-600 text-sm" id="pct-interne">0%</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-sm"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#f59e0b;margin-right:6px;"></span>Confidentiel</span>
+            <span class="fw-600 text-sm" id="pct-confidentiel">0%</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-sm"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;margin-right:6px;"></span>Secret</span>
+            <span class="fw-600 text-sm" id="pct-secret">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-clock me-2 text-primary"></i>Documents récents</span>
+        <a href="{% url 'consultation_archives' %}" class="btn btn-outline btn-sm">Tout voir</a>
+      </div>
+      <div class="card-body p-0">
+        {% if recent_docs %}
+          <table class="table mb-0">
+            <thead>
+              <tr><th>Document</th><th>Catégorie</th><th>Archiviste</th><th>Niveau</th><th>Date</th></tr>
+            </thead>
+            <tbody>
+              {% for doc in recent_docs %}
+              <tr style="cursor:pointer;" data-href="{% url 'detail_document' doc.pk %}">
+                <td>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <i class="{{ doc.get_icon }}" style="font-size:18px;"></i>
+                    <div>
+                      <div class="fw-500 text-sm">{{ doc.titre|truncatechars:35 }}</div>
+                      <div class="text-xs text-muted">{{ doc.get_taille }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
+                <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:doc.archiviste.username|default:"—" }}</span></td>
+                <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
+                <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="empty-title">Aucun document archivé</div>
+            <div class="empty-text">Les documents apparaîtront ici après le premier upload</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-5">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-activity me-2 text-primary"></i>Activités récentes</span>
+        <a href="{% url 'historique_systeme' %}" class="btn btn-outline btn-sm">Historique</a>
+      </div>
+      <div class="card-body">
+        {% if recent_activity %}
+          <div class="timeline">
+            {% for log in recent_activity %}
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="{{ log.get_icon }}" style="font-size:7px;"></i></div>
+              <div class="timeline-content">
+                <div class="timeline-title">{{ log.get_action_display }}</div>
+                <div class="timeline-time">
+                  <i class="bi bi-person-circle me-1"></i>
+                  {{ log.utilisateur.get_full_name|default:log.utilisateur.username|default:"Système" }}
+                  · {{ log.created_at|date:"d/m H:i" }}
+                </div>
+                <div class="timeline-desc">{{ log.description|truncatechars:55 }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-clock-history"></i></div>
+            <div class="empty-title">Aucune activité</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var labels = JSON.parse(document.getElementById('mois-labels').textContent);
+    var values = JSON.parse(document.getElementById('mois-data').textContent);
+    var pct    = JSON.parse(document.getElementById('conf-pct').textContent);
+
+    document.getElementById('pct-public').textContent       = pct.public + '%';
+    document.getElementById('pct-interne').textContent      = pct.interne + '%';
+    document.getElementById('pct-confidentiel').textContent = pct.confidentiel + '%';
+    document.getElementById('pct-secret').textContent       = pct.secret + '%';
+
+    var c1 = document.getElementById('docsChart');
+    if (c1) {
+        new Chart(c1, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Documents',
+                    data: values,
+                    backgroundColor: 'rgba(37,99,235,0.15)',
+                    borderColor: '#2563eb',
+                    borderWidth: 2,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    barThickness: 48,
+                    maxBarThickness: 60
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, precision: 0, font: { size: 11 }, color: '#94a3b8' },
+                        grid: { color: '#f1f5f9' },
+                        border: { display: false }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 12, weight: '500' },
+                            color: '#64748b',
+                            maxRotation: 0,
+                            minRotation: 0
+                        },
+                        border: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    var c2 = document.getElementById('typeChart');
+    if (c2) {
+        new Chart(c2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Public', 'Interne', 'Confidentiel', 'Secret'],
+                datasets: [{
+                    data: [pct.public, pct.interne, pct.confidentiel, pct.secret],
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (c) { return ' ' + c.parsed + '%'; }
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+}());
+</script>
+{% endblock %}

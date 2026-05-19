@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}{{ document.titre }} — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item"><a href="{% url 'liste_documents' %}">Documents</a></li><li class="breadcrumb-item active">{{ document.titre|truncatechars:30 }}</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ document.titre }}</h1>
+    <p class="page-subtitle">Détails du document</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'telecharger_document' document.pk %}" class="btn btn-primary"><i class="bi bi-download"></i> Télécharger</a>
+    <a href="{% url 'modifier_document' document.pk %}" class="btn btn-outline"><i class="bi bi-pencil"></i> Modifier</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <div class="card mb-3">
+      <div class="card-header"><span class="card-title"><i class="bi bi-file-earmark me-2 text-primary"></i>Informations</span></div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <div class="text-xs text-muted mb-1">Titre</div>
+            <div class="fw-500">{{ document.titre }}</div>
+          </div>
+          {% if document.description %}
+          <div class="col-12">
+            <div class="text-xs text-muted mb-1">Description</div>
+            <div class="text-sm">{{ document.description }}</div>
+          </div>
+          {% endif %}
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Catégorie</div>
+            <div class="text-sm fw-500">{{ document.categorie|default:"—" }}</div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Confidentialité</div>
+            <span class="badge-custom badge-{{ document.confidentialite }}">{{ document.get_confidentialite_display }}</span>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Statut</div>
+            <span class="badge-custom badge-{{ document.statut }}">{{ document.get_statut_display }}</span>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Taille</div>
+            <div class="text-sm">{{ document.get_taille }}</div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Archiviste</div>
+            <div class="text-sm">{{ document.archiviste.get_full_name|default:document.archiviste.username }}</div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="text-xs text-muted mb-1">Date d'ajout</div>
+            <div class="text-sm">{{ document.created_at|date:"d/m/Y H:i" }}</div>
+          </div>
+          {% if document.tags.exists %}
+          <div class="col-12">
+            <div class="text-xs text-muted mb-1">Tags</div>
+            {% for tag in document.tags.all %}<span class="badge bg-light text-secondary border me-1">{{ tag.nom }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-4">
+    <div class="card mb-3">
+      <div class="card-body text-center" style="padding:32px 20px;">
+        <div style="font-size:64px;margin-bottom:12px;"><i class="{{ document.get_icon }}"></i></div>
+        <div class="fw-600 text-sm">{{ document.fichier.name|default:""|slice:"-30:" }}</div>
+        <div class="text-xs text-muted mt-1">{{ document.get_taille }}</div>
+        <a href="{% url 'telecharger_document' document.pk %}" class="btn btn-primary w-100 mt-3"><i class="bi bi-download"></i> Télécharger</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-column gap-2">
+          <a href="{% url 'modifier_document' document.pk %}" class="btn btn-outline w-100"><i class="bi bi-pencil me-2"></i>Modifier</a>
+          {% if document.statut == 'actif' %}
+          <a href="{% url 'archiver_document' document.pk %}" class="btn btn-outline w-100" data-confirm="Archiver ce document ?"><i class="bi bi-archive me-2"></i>Archiver</a>
+          {% endif %}
+          <a href="{% url 'supprimer_document' document.pk %}" class="btn btn-outline w-100 text-danger"><i class="bi bi-trash me-2"></i>Supprimer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}{{ titre }} — GED{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'gestion_utilisateurs' %}">Utilisateurs</a></li>
+<li class="breadcrumb-item active">{{ titre }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">{{ titre }}</h1></div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="card">
+      <div class="card-header"><span class="card-title"><i class="bi bi-person me-2 text-primary"></i>Informations utilisateur</span></div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label">Prénom</label>
+              {{ form.first_name }}
+            </div>
+            <div class="col-6">
+              <label class="form-label">Nom</label>
+              {{ form.last_name }}
+            </div>
+            {% if form.username %}
+            <div class="col-12">
+              <label class="form-label">Nom d'utilisateur <span class="text-danger">*</span></label>
+              {{ form.username }}
+            </div>
+            {% endif %}
+            <div class="col-12">
+              <label class="form-label">Email</label>
+              {{ form.email }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Rôle</label>
+              {{ form.role }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Téléphone</label>
+              {{ form.telephone }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Département</label>
+              {{ form.departement }}
+            </div>
+            {% if form.password %}
+            <div class="col-12">
+              <label class="form-label">Mot de passe <span class="text-danger">*</span></label>
+              {{ form.password }}
+            </div>
+            {% endif %}
+            {% if form.is_active %}
+            <div class="col-12">
+              <div class="form-check">
+                {{ form.is_active }}
+                <label class="form-check-label">Compte actif</label>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          <div class="d-flex gap-2 justify-content-end mt-4">
+            <a href="{% url 'gestion_utilisateurs' %}" class="btn btn-outline">Annuler</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

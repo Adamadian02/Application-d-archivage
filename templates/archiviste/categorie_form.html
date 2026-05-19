@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}{{ titre }} — GED{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'liste_categories' %}">Catégories</a></li>
+<li class="breadcrumb-item active">{{ titre }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">{{ titre }}</h1></div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-folder-plus me-2 text-primary"></i>Informations de la catégorie</span>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Nom <span class="text-danger">*</span></label>
+            {{ form.nom }}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            {{ form.description }}
+            <div class="text-xs text-muted mt-1">Optionnel — décrit le contenu de cette catégorie</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Couleur</label>
+            {{ form.couleur }}
+            <div class="mt-2 d-flex gap-2 flex-wrap" id="color-preview">
+              <span class="badge bg-primary px-3 py-2">Bleu</span>
+              <span class="badge bg-success px-3 py-2">Vert</span>
+              <span class="badge bg-danger px-3 py-2">Rouge</span>
+              <span class="badge bg-warning text-dark px-3 py-2">Orange</span>
+              <span class="badge bg-info text-dark px-3 py-2">Cyan</span>
+              <span class="badge bg-secondary px-3 py-2">Gris</span>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">
+              Catégorie parente
+              <span class="text-xs text-muted ms-1">(optionnel — pour créer une sous-catégorie)</span>
+            </label>
+            {{ form.parent }}
+            <div class="text-xs text-muted mt-1">
+              <i class="bi bi-info-circle me-1"></i>
+              Laissez vide si c'est une catégorie principale.
+              Choisissez une catégorie existante pour en faire une sous-catégorie.
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-end">
+            <a href="{% url 'liste_categories' %}" class="btn btn-outline">Annuler</a>
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg"></i> Enregistrer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

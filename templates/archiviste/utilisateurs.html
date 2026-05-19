@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Gestion Utilisateurs — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Utilisateurs</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Gestion des Utilisateurs</h1>
+    <p class="page-subtitle">{{ users.count }} utilisateur(s) dans le système</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'creer_utilisateur' %}" class="btn btn-primary"><i class="bi bi-person-plus"></i> Nouvel utilisateur</a>
+  </div>
+</div>
+
+<!-- Search -->
+<div class="card mb-3">
+  <div class="card-body" style="padding:14px 20px;">
+    <form method="get">
+      <div class="row g-2">
+        <div class="col-12 col-md-6">
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Rechercher par nom, email...">
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Rechercher</button>
+        </div>
+        {% if query %}
+        <div class="col-auto">
+          <a href="{% url 'gestion_utilisateurs' %}" class="btn btn-outline"><i class="bi bi-x"></i> Effacer</a>
+        </div>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="table-container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Rôle</th>
+        <th>Département</th>
+        <th>Contact</th>
+        <th>Statut</th>
+        <th>Créé le</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#1e40af;flex-shrink:0;">
+              {{ u.first_name|first|upper }}{{ u.last_name|first|upper }}
+            </div>
+            <div>
+              <div class="fw-500 text-sm">{{ u.get_full_name|default:u.username }}</div>
+              <div class="text-xs text-muted">{{ u.email }}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="badge-custom badge-{{ u.role }}">{{ u.get_role_display }}</span></td>
+        <td><span class="text-sm">{{ u.departement|default:"—" }}</span></td>
+        <td><span class="text-sm text-muted">{{ u.telephone|default:"—" }}</span></td>
+        <td>
+          {% if u.is_active %}
+            <span class="badge-custom badge-actif"><i class="bi bi-circle-fill me-1" style="font-size:7px;"></i>Actif</span>
+          {% else %}
+            <span class="badge-custom badge-archive">Inactif</span>
+          {% endif %}
+        </td>
+        <td><span class="text-xs text-muted">{{ u.created_at|date:"d/m/Y" }}</span></td>
+        <td>
+          <div class="table-actions">
+            {% if request.user.is_admin %}
+              <a href="{% url 'modifier_utilisateur' u.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Modifier"><i class="bi bi-pencil"></i></a>
+              {% if u != request.user %}
+              <a href="{% url 'supprimer_utilisateur' u.pk %}" class="btn btn-outline btn-sm text-danger" data-bs-toggle="tooltip" title="Supprimer"><i class="bi bi-trash"></i></a>
+              {% endif %}
+            {% else %}
+              {% if not u.is_admin and u == request.user %}
+              <a href="{% url 'modifier_utilisateur' u.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Modifier mon profil"><i class="bi bi-pencil"></i></a>
+              {% else %}
+              <span class="text-xs text-muted">—</span>
+              {% endif %}
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon"><i class="bi bi-people"></i></div><div class="empty-title">Aucun utilisateur</div></div></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

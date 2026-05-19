@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Catégories — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Catégories</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Gestion des Catégories</h1><p class="page-subtitle">Organisez vos documents par catégories</p></div>
+  <div class="page-actions"><a href="{% url 'creer_categorie' %}" class="btn btn-primary"><i class="bi bi-folder-plus"></i> Nouvelle catégorie</a></div>
+</div>
+{% if categories %}
+<div class="row g-3">
+  {% for cat in categories %}
+  <div class="col-12 col-md-6 col-xl-4">
+    <div class="cat-card">
+      <div class="cat-dot bg-{{ cat.couleur }}" style="background:{% if cat.couleur == 'primary' %}#2563eb{% elif cat.couleur == 'success' %}#10b981{% elif cat.couleur == 'danger' %}#ef4444{% elif cat.couleur == 'warning' %}#f59e0b{% elif cat.couleur == 'info' %}#06b6d4{% else %}#6b7280{% endif %};"></div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="fw-600" style="font-size:14px;">{{ cat.nom }}</div>
+          <div class="d-flex gap-1">
+            <a href="{% url 'modifier_categorie' cat.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'supprimer_categorie' cat.pk %}" class="btn btn-outline btn-sm text-danger"><i class="bi bi-trash"></i></a>
+          </div>
+        </div>
+        {% if cat.description %}<p class="text-xs text-muted mt-1 mb-2">{{ cat.description|truncatechars:80 }}</p>{% endif %}
+        {% if cat.sous_categories.exists %}
+        <div class="mt-2">
+          <div class="text-xs text-muted mb-1">Sous-catégories :</div>
+          {% for sub in cat.sous_categories.all %}<span class="badge bg-light text-secondary border me-1" style="font-size:10px;">{{ sub.nom }}</span>{% endfor %}
+        </div>
+        {% endif %}
+        <div class="mt-2 text-xs text-muted">{{ cat.document_set.count|default:"0" }} document(s)</div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="card"><div class="empty-state"><div class="empty-icon"><i class="bi bi-tags"></i></div><div class="empty-title">Aucune catégorie</div><div class="empty-text">Créez votre première catégorie pour organiser les documents</div><a href="{% url 'creer_categorie' %}" class="btn btn-primary mt-3"><i class="bi bi-folder-plus"></i> Créer</a></div></div>
+{% endif %}
+{% endblock %}

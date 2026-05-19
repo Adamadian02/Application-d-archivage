@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Mon Historique — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Mon Historique</li>{% endblock %}
+
+{% block content %}
+<div class="page-header"><div><h1 class="page-title">Mon Historique</h1><p class="page-subtitle">Toutes vos activités dans le système</p></div></div>
+<div class="card">
+  <div class="card-body p-0">
+    {% if logs %}
+    <table class="table mb-0">
+      <thead><tr><th>Action</th><th>Description</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:32px;height:32px;border-radius:8px;background:#dbeafe;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:14px;"><i class="{{ log.get_icon }}"></i></div><span class="text-sm fw-500">{{ log.get_action_display }}</span></div></td>
+          <td><span class="text-sm text-muted">{{ log.description }}</span></td>
+          <td><span class="text-xs text-muted">{{ log.created_at|date:"d/m/Y H:i" }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state"><div class="empty-icon"><i class="bi bi-clock-history"></i></div><div class="empty-title">Aucune activité</div></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

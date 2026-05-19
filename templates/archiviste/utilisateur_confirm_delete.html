@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Supprimer utilisateur — GED{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+  <div class="col-12 col-md-6">
+    <div class="card">
+      <div class="card-header"><span class="card-title text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Confirmer la suppression</span></div>
+      <div class="card-body text-center" style="padding:32px;">
+        <div style="font-size:48px;color:#ef4444;margin-bottom:16px;"><i class="bi bi-person-x"></i></div>
+        <h5 style="margin-bottom:8px;">Supprimer {{ user_del.get_full_name|default:user_del.username }} ?</h5>
+        <p class="text-muted text-sm">Cette action est irréversible. Toutes les données associées seront perdues.</p>
+        <div class="d-flex gap-2 justify-content-center mt-4">
+          <a href="{% url 'gestion_utilisateurs' %}" class="btn btn-outline">Annuler</a>
+          <form method="post" style="display:inline;">{% csrf_token %}<button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Supprimer</button></form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

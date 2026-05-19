@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Archives — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Archives</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><h1 class="page-title">Consultation des Archives</h1><p class="page-subtitle">{{ documents.count }} document(s) archivé(s)</p></div>
+  <div class="page-actions"><a href="{% url 'recherche_documents' %}" class="btn btn-outline"><i class="bi bi-search"></i> Rechercher</a></div>
+</div>
+
+<div class="table-container">
+  {% if documents %}
+  <table class="table mb-0">
+    <thead><tr><th>Document</th><th>Archiviste</th><th>Catégorie</th><th>Confidentialité</th><th>Statut</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>
+      {% for doc in documents %}
+      <tr>
+        <td><div style="display:flex;align-items:center;gap:10px;"><i class="{{ doc.get_icon }}" style="font-size:20px;"></i><div><div class="fw-500 text-sm">{{ doc.titre|truncatechars:40 }}</div><div class="text-xs text-muted">{{ doc.get_taille }}</div></div></div></td>
+        <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:"—" }}</span></td>
+        <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
+        <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
+        <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
+        <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
+        <td><div class="table-actions"><a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a><a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a></div></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon"><i class="bi bi-archive"></i></div><div class="empty-title">Aucun document archivé</div></div>
+  {% endif %}
+</div>
+{% endblock %}

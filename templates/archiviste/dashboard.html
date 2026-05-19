@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Archiviste — GED{% endblock %}
+{% block breadcrumb %}<li class="breadcrumb-item active">Dashboard</li>{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Bonjour, {{ user.first_name|default:user.username }} 👋</h1>
+    <p class="page-subtitle">Voici votre espace de travail documentaire</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'upload_document' %}" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Uploader</a>
+  </div>
+</div>
+
+<!-- QUICK ACCESS -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <a href="{% url 'upload_document' %}" style="text-decoration:none;">
+      <div class="stat-card" style="flex-direction:column;align-items:center;text-align:center;padding:24px 16px;">
+        <div class="stat-icon stat-icon-blue" style="width:52px;height:52px;font-size:24px;"><i class="bi bi-cloud-upload"></i></div>
+        <div class="stat-label mt-2" style="font-size:13px;font-weight:600;color:#0f172a;">Upload</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-md-3">
+    <a href="{% url 'liste_documents' %}" style="text-decoration:none;">
+      <div class="stat-card" style="flex-direction:column;align-items:center;text-align:center;padding:24px 16px;">
+        <div class="stat-icon stat-icon-green" style="width:52px;height:52px;font-size:24px;"><i class="bi bi-folder2-open"></i></div>
+        <div class="stat-label mt-2" style="font-size:13px;font-weight:600;color:#0f172a;">Mes Documents</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-md-3">
+    <a href="{% url 'gestion_utilisateurs' %}" style="text-decoration:none;">
+      <div class="stat-card" style="flex-direction:column;align-items:center;text-align:center;padding:24px 16px;">
+        <div class="stat-icon stat-icon-purple" style="width:52px;height:52px;font-size:24px;"><i class="bi bi-people"></i></div>
+        <div class="stat-label mt-2" style="font-size:13px;font-weight:600;color:#0f172a;">Utilisateurs</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-6 col-md-3">
+    <a href="{% url 'liste_categories' %}" style="text-decoration:none;">
+      <div class="stat-card" style="flex-direction:column;align-items:center;text-align:center;padding:24px 16px;">
+        <div class="stat-icon stat-icon-orange" style="width:52px;height:52px;font-size:24px;"><i class="bi bi-tags"></i></div>
+        <div class="stat-label mt-2" style="font-size:13px;font-weight:600;color:#0f172a;">Catégories</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="row g-3 mb-4">
+  <div class="col-12 col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-blue"><i class="bi bi-file-earmark-text"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.mes_docs }}</div>
+        <div class="stat-label">Mes documents</div>
+        <div class="stat-change up"><i class="bi bi-arrow-up-short"></i>+{{ stats.docs_ce_mois }} ce mois</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-teal"><i class="bi bi-tags"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.categories }}</div>
+        <div class="stat-label">Catégories</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-green"><i class="bi bi-check2-circle"></i></div>
+      <div>
+        <div class="stat-value">{{ stats.docs_ce_mois }}</div>
+        <div class="stat-label">Uploads ce mois</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Documents récents -->
+  <div class="col-12 col-lg-7">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-clock me-2 text-primary"></i>Mes derniers documents</span>
+        <a href="{% url 'liste_documents' %}" class="btn btn-outline btn-sm">Tout voir</a>
+      </div>
+      <div class="card-body p-0">
+        {% if recent_docs %}
+          <table class="table mb-0">
+            <thead><tr><th>Document</th><th>Catégorie</th><th>Statut</th><th>Date</th><th></th></tr></thead>
+            <tbody>
+              {% for doc in recent_docs %}
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <i class="{{ doc.get_icon }}" style="font-size:18px;"></i>
+                    <div>
+                      <div class="fw-500 text-sm">{{ doc.titre|truncatechars:30 }}</div>
+                      <div class="text-xs text-muted">{{ doc.get_taille }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
+                <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
+                <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
+                <td>
+                  <div class="table-actions">
+                    <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Voir"><i class="bi bi-eye"></i></a>
+                    <a href="{% url 'modifier_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Modifier"><i class="bi bi-pencil"></i></a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="empty-title">Aucun document</div>
+            <div class="empty-text">Commencez par uploader votre premier document</div>
+            <a href="{% url 'upload_document' %}" class="btn btn-primary mt-3"><i class="bi bi-cloud-upload"></i> Uploader</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="col-12 col-lg-5">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title"><i class="bi bi-activity me-2 text-primary"></i>Mes activités</span>
+        <a href="{% url 'historique_personnel' %}" class="btn btn-outline btn-sm">Tout voir</a>
+      </div>
+      <div class="card-body">
+        {% if recent_activity %}
+          <div class="timeline">
+            {% for log in recent_activity %}
+            <div class="timeline-item">
+              <div class="timeline-dot"><i class="{{ log.get_icon }}" style="font-size:7px;"></i></div>
+              <div class="timeline-content">
+                <div class="timeline-title">{{ log.get_action_display }}</div>
+                <div class="timeline-time">{{ log.created_at|date:"d/m/Y H:i" }}</div>
+                <div class="timeline-desc">{{ log.description|truncatechars:50 }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-state"><div class="empty-icon"><i class="bi bi-clock-history"></i></div><div class="empty-title">Aucune activité</div></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
