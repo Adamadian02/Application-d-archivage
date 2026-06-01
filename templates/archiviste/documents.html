@@ -50,7 +50,7 @@
 
 <!-- Table -->
 <div class="table-container">
-  {% if documents %}
+  {% if documents.object_list %}
     <table class="table">
       <thead>
         <tr>
@@ -108,4 +108,20 @@
     </div>
   {% endif %}
 </div>
+
+{% if documents.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if documents.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ documents.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}">&laquo;</a></li>
+    {% endif %}
+    {% for i in documents.paginator.page_range %}
+      <li class="page-item {% if documents.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}">{{ i }}</a></li>
+    {% endfor %}
+    {% if documents.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ documents.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}">&raquo;</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
 {% endblock %}

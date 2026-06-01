@@ -48,7 +48,7 @@
           </div>
           <div class="col-6 col-md-4">
             <div class="text-xs text-muted mb-1">Archiviste</div>
-            <div class="text-sm">{{ document.archiviste.get_full_name|default:document.archiviste.username }}</div>
+            <div class="text-sm">{% if document.archiviste %}{{ document.archiviste.get_full_name|default:document.archiviste.username }}{% else %}—{% endif %}</div>
           </div>
           <div class="col-6 col-md-4">
             <div class="text-xs text-muted mb-1">Date d'ajout</div>

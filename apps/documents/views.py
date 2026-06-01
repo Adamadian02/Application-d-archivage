@@ -8,9 +8,11 @@ from .forms import DocumentForm
 from apps.historique.models import Historique
 from apps.categories.models import Categorie
 
+from django.core.paginator import Paginator
+
 @login_required
 def liste_documents(request):
-    docs = Document.objects.exclude(statut='supprime')
+    docs = Document.objects.exclude(statut='supprime').order_by('-created_at')
     if request.user.is_archiviste():
         docs = docs.filter(archiviste=request.user)
     query = request.GET.get('q', '')
@@ -25,10 +27,14 @@ def liste_documents(request):
         docs = docs.filter(confidentialite=conf_filter)
     if statut_filter:
         docs = docs.filter(statut=statut_filter)
+    paginator = Paginator(docs, 20)
+    page_number = request.GET.get('page')
+    docs_page = paginator.get_page(page_number)
+    
     categories = Categorie.objects.all()
     return render(request, 'archiviste/documents.html', {
-        'documents': docs, 'query': query, 'categories': categories,
-        'cat_filter': cat_filter, 'conf_filter': conf_filter
+        'documents': docs_page, 'query': query, 'categories': categories,
+        'cat_filter': cat_filter, 'conf_filter': conf_filter, 'docs_count': paginator.count
     })
 
 @login_required
@@ -38,7 +44,7 @@ def upload_document(request):
         doc = form.save(commit=False)
         doc.archiviste = request.user
         doc.save()
-        form.save()
+        form.save_m2m()
         Historique.objects.create(utilisateur=request.user, action='upload', description=f'Upload du document "{doc.titre}"')
         messages.success(request, f'Document "{doc.titre}" uploadé avec succès.')
         return redirect('liste_documents')
@@ -99,6 +105,9 @@ def recherche_documents(request):
     date_debut = request.GET.get('date_debut', '')
     date_fin = request.GET.get('date_fin', '')
     docs = Document.objects.exclude(statut='supprime')
+    # Les archivistes peuvent voir les documents publics/internes ou les leurs
+    if request.user.is_archiviste():
+        docs = docs.filter(Q(archiviste=request.user) | Q(confidentialite__in=['public', 'interne']))
     if query:
         docs = docs.filter(Q(titre__icontains=query) | Q(description__icontains=query) | Q(tags__nom__icontains=query) | Q(archiviste__username__icontains=query)).distinct()
     if cat_filter:
@@ -109,12 +118,17 @@ def recherche_documents(request):
         docs = docs.filter(created_at__date__gte=date_debut)
     if date_fin:
         docs = docs.filter(created_at__date__lte=date_fin)
+        
+    paginator = Paginator(docs, 20)
+    page_number = request.GET.get('page')
+    docs_page = paginator.get_page(page_number)
+    
     categories = Categorie.objects.all()
     template = 'admin_ged/recherche.html' if request.user.is_admin() else 'archiviste/recherche.html'
     return render(request, template, {
-        'documents': docs, 'query': query, 'categories': categories,
+        'documents': docs_page, 'query': query, 'categories': categories,
         'cat_filter': cat_filter, 'conf_filter': conf_filter,
-        'date_debut': date_debut, 'date_fin': date_fin
+        'date_debut': date_debut, 'date_fin': date_fin, 'docs_count': paginator.count
     })
 
 @login_required
@@ -122,5 +136,8 @@ def consultation_archives(request):
     if not request.user.is_admin():
         from django.core.exceptions import PermissionDenied
         raise PermissionDenied
-    docs = Document.objects.all()
-    return render(request, 'admin_ged/archives.html', {'documents': docs})
+    docs = Document.objects.filter(statut='archive').order_by('-created_at')
+    paginator = Paginator(docs, 20)
+    page_number = request.GET.get('page')
+    docs_page = paginator.get_page(page_number)
+    return render(request, 'admin_ged/archives.html', {'documents': docs_page})

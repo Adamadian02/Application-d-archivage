@@ -58,9 +58,9 @@
     <div class="stat-card">
       <div class="stat-icon stat-icon-orange"><i class="bi bi-shield-check"></i></div>
       <div>
-        <div class="stat-value">98%</div>
-        <div class="stat-label">Disponibilité système</div>
-        <div class="stat-change up"><i class="bi bi-check-circle"></i> Opérationnel</div>
+        <div class="stat-value">{{ stats.actions_aujourdhui }}</div>
+        <div class="stat-label">Actions aujourd'hui</div>
+        <div class="stat-change up"><i class="bi bi-activity"></i> Temps réel</div>
       </div>
     </div>
   </div>
@@ -134,7 +134,7 @@
                   </div>
                 </td>
                 <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
-                <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:doc.archiviste.username|default:"—" }}</span></td>
+                <td><span class="text-sm">{% if doc.archiviste %}{{ doc.archiviste.get_full_name|default:doc.archiviste.username }}{% else %}—{% endif %}</span></td>
                 <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
                 <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
               </tr>
@@ -167,7 +167,7 @@
                 <div class="timeline-title">{{ log.get_action_display }}</div>
                 <div class="timeline-time">
                   <i class="bi bi-person-circle me-1"></i>
-                  {{ log.utilisateur.get_full_name|default:log.utilisateur.username|default:"Système" }}
+                  {% if log.utilisateur %}{{ log.utilisateur.get_full_name|default:log.utilisateur.username }}{% else %}Système{% endif %}
                   · {{ log.created_at|date:"d/m H:i" }}
                 </div>
                 <div class="timeline-desc">{{ log.description|truncatechars:55 }}</div>

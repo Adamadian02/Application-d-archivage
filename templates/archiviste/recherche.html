@@ -40,10 +40,10 @@
   <!-- Results -->
   <div class="col-12 col-lg-9">
     <div class="d-flex align-items-center justify-content-between mb-3">
-      <span class="text-sm text-muted">{{ documents.count }} résultat(s){% if query %} pour "{{ query }}"{% endif %}</span>
+      <span class="text-sm text-muted">{{ docs_count }} résultat(s){% if query %} pour "{{ query }}"{% endif %}</span>
     </div>
 
-    {% if documents %}
+    {% if documents.object_list %}
       <div class="table-container">
         <table class="table">
           <thead><tr><th>Document</th><th>Catégorie</th><th>Archiviste</th><th>Niveau</th><th>Date</th><th>Actions</th></tr></thead>
@@ -52,7 +52,7 @@
             <tr>
               <td><div style="display:flex;align-items:center;gap:10px;"><i class="{{ doc.get_icon }}" style="font-size:20px;"></i><div><div class="fw-500 text-sm">{{ doc.titre|truncatechars:40 }}</div><div class="text-xs text-muted">{{ doc.get_taille }}</div></div></div></td>
               <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
-              <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:"—" }}</span></td>
+              <td><span class="text-sm">{% if doc.archiviste %}{{ doc.archiviste.get_full_name }}{% else %}—{% endif %}</span></td>
               <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
               <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
               <td><div class="table-actions"><a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a><a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a></div></td>
@@ -61,6 +61,23 @@
           </tbody>
         </table>
       </div>
+
+      {% if documents.has_other_pages %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if documents.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ documents.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}{% if date_debut %}&date_debut={{ date_debut }}{% endif %}{% if date_fin %}&date_fin={{ date_fin }}{% endif %}">&laquo;</a></li>
+          {% endif %}
+          {% for i in documents.paginator.page_range %}
+            <li class="page-item {% if documents.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}{% if date_debut %}&date_debut={{ date_debut }}{% endif %}{% if date_fin %}&date_fin={{ date_fin }}{% endif %}">{{ i }}</a></li>
+          {% endfor %}
+          {% if documents.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ documents.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if cat_filter %}&categorie={{ cat_filter }}{% endif %}{% if conf_filter %}&confidentialite={{ conf_filter }}{% endif %}{% if date_debut %}&date_debut={{ date_debut }}{% endif %}{% if date_fin %}&date_fin={{ date_fin }}{% endif %}">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+
     {% else %}
       <div class="card"><div class="empty-state"><div class="empty-icon"><i class="bi bi-search"></i></div><div class="empty-title">Aucun résultat</div><div class="empty-text">Essayez d'autres mots-clés ou filtres</div></div></div>
     {% endif %}

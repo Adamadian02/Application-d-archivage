@@ -6,7 +6,7 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">Gestion des Utilisateurs</h1>
-    <p class="page-subtitle">{{ users.count }} utilisateur(s) dans le système</p>
+    <p class="page-subtitle">{{ users.paginator.count }} utilisateur(s) dans le système</p>
   </div>
   <div class="page-actions">
     <a href="{% url 'creer_utilisateur' %}" class="btn btn-primary"><i class="bi bi-person-plus"></i> Nouvel utilisateur</a>
@@ -98,4 +98,20 @@
     </tbody>
   </table>
 </div>
+
+{% if users.has_other_pages %}
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if users.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ users.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">&laquo;</a></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+      <li class="page-item {% if users.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}">{{ i }}</a></li>
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ users.next_page_number }}{% if query %}&q={{ query }}{% endif %}">&raquo;</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
 {% endblock %}

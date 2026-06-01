@@ -39,11 +39,13 @@ def dashboard(request):
         recent_activity = Historique.objects.select_related('utilisateur').all().order_by('-created_at')[:10]
 
         today = datetime.date.today()
+        actions_aujourdhui = Historique.objects.filter(created_at__date=today).count()
         stats = {
             'total_docs': docs.count(),
             'total_users': users.count(),
             'docs_ce_mois': docs.filter(created_at__month=today.month, created_at__year=today.year).count(),
             'archivistes': users.filter(role='archiviste').count(),
+            'actions_aujourdhui': actions_aujourdhui,
         }
 
         # Graphique réel : documents par mois sur 6 mois
@@ -104,15 +106,28 @@ def dashboard(request):
             'notifications': notifications,
         })
 
+from django.core.paginator import Paginator
+
 @login_required
 def gestion_utilisateurs(request):
     query = request.GET.get('q', '')
-    users = User.objects.all()
+    users = User.objects.all().order_by('-created_at')
     if query:
         users = users.filter(Q(username__icontains=query)|Q(first_name__icontains=query)|Q(last_name__icontains=query)|Q(email__icontains=query))
-    return render(request, 'archiviste/utilisateurs.html', {'users': users, 'query': query})
+    
+    paginator = Paginator(users, 20)
+    page_number = request.GET.get('page')
+    users_page = paginator.get_page(page_number)
+    
+    return render(request, 'archiviste/utilisateurs.html', {'users': users_page, 'query': query, 'users_count': paginator.count})
+
+from django.contrib.auth.decorators import user_passes_test
+
+def is_admin_check(user):
+    return user.is_authenticated and user.is_admin()
 
 @login_required
+@user_passes_test(is_admin_check)
 def creer_utilisateur(request):
     form = UserCreateForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
@@ -123,6 +138,7 @@ def creer_utilisateur(request):
     return render(request, 'archiviste/utilisateur_form.html', {'form': form, 'titre': 'Créer un utilisateur'})
 
 @login_required
+@user_passes_test(is_admin_check)
 def modifier_utilisateur(request, pk):
     user = get_object_or_404(User, pk=pk)
     form = UserEditForm(request.POST or None, instance=user)
@@ -134,6 +150,7 @@ def modifier_utilisateur(request, pk):
     return render(request, 'archiviste/utilisateur_form.html', {'form': form, 'titre': "Modifier l'utilisateur", 'user_edit': user})
 
 @login_required
+@user_passes_test(is_admin_check)
 def supprimer_utilisateur(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':

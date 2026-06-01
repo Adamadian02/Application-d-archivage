@@ -9,23 +9,39 @@
 </div>
 
 <div class="table-container">
-  {% if documents %}
+  {% if documents.object_list %}
   <table class="table mb-0">
-    <thead><tr><th>Document</th><th>Archiviste</th><th>Catégorie</th><th>Confidentialité</th><th>Statut</th><th>Date</th><th>Actions</th></tr></thead>
+    <thead><tr><th>Document</th><th>Archiviste</th><th>Catégorie</th><th>Confidentialité</th><th>Date</th><th>Actions</th></tr></thead>
     <tbody>
       {% for doc in documents %}
       <tr>
         <td><div style="display:flex;align-items:center;gap:10px;"><i class="{{ doc.get_icon }}" style="font-size:20px;"></i><div><div class="fw-500 text-sm">{{ doc.titre|truncatechars:40 }}</div><div class="text-xs text-muted">{{ doc.get_taille }}</div></div></div></td>
-        <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:"—" }}</span></td>
+        <td><span class="text-sm">{% if doc.archiviste %}{{ doc.archiviste.get_full_name }}{% else %}—{% endif %}</span></td>
         <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
         <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
-        <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
         <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
         <td><div class="table-actions"><a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a><a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a></div></td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  {% if documents.has_other_pages %}
+  <nav aria-label="Page navigation" class="mt-4 mb-3">
+    <ul class="pagination justify-content-center">
+      {% if documents.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ documents.previous_page_number }}">&laquo;</a></li>
+      {% endif %}
+      {% for i in documents.paginator.page_range %}
+        <li class="page-item {% if documents.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endfor %}
+      {% if documents.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ documents.next_page_number }}">&raquo;</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
   {% else %}
   <div class="empty-state"><div class="empty-icon"><i class="bi bi-archive"></i></div><div class="empty-title">Aucun document archivé</div></div>
   {% endif %}
