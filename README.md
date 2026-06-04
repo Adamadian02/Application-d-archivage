@@ -23,8 +23,8 @@ python manage.py runserver
 
 | Rôle | Identifiant | Mot de passe |
 |------|-------------|--------------|
-| Administrateur | `admin` | `admin123` |
-| Archiviste | `archiviste` | `archiviste123` |
+| Administrateur | `admin` | `Centre@Info` |
+| Archiviste | `archiviste` | `Groupe7@2026` |
 
 ## 📁 Structure
 
