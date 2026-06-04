@@ -4,46 +4,146 @@
 
 {% block content %}
 <div class="page-header">
-  <div><h1 class="page-title">Consultation des Archives</h1><p class="page-subtitle">{{ documents.count }} document(s) archivé(s)</p></div>
-  <div class="page-actions"><a href="{% url 'recherche_documents' %}" class="btn btn-outline"><i class="bi bi-search"></i> Rechercher</a></div>
+  <div>
+    <h1 class="page-title">Consultation des Archives</h1>
+    <p class="page-subtitle">{{ total }} document(s) archivé(s)</p>
+  </div>
+  <div class="page-actions">
+    <a href="{% url 'recherche_documents' %}" class="btn btn-outline"><i class="bi bi-search"></i> Rechercher</a>
+  </div>
 </div>
 
-<div class="table-container">
-  {% if documents.object_list %}
-  <table class="table mb-0">
-    <thead><tr><th>Document</th><th>Archiviste</th><th>Catégorie</th><th>Confidentialité</th><th>Date</th><th>Actions</th></tr></thead>
-    <tbody>
-      {% for doc in documents %}
-      <tr>
-        <td><div style="display:flex;align-items:center;gap:10px;"><i class="{{ doc.get_icon }}" style="font-size:20px;"></i><div><div class="fw-500 text-sm">{{ doc.titre|truncatechars:40 }}</div><div class="text-xs text-muted">{{ doc.get_taille }}</div></div></div></td>
-        <td><span class="text-sm">{% if doc.archiviste %}{{ doc.archiviste.get_full_name }}{% else %}—{% endif %}</span></td>
-        <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
-        <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
-        <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
-        <td><div class="table-actions"><a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a><a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a></div></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<!-- FILTRES -->
+<form method="get" class="card mb-4" style="padding:16px 20px;">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+    <div style="flex:1;min-width:140px;">
+      <label class="text-xs text-muted mb-1" style="display:block;">Année</label>
+      <select name="annee" class="form-control" style="height:38px;">
+        <option value="">Toutes les années</option>
+        {% for annee in annees %}
+          <option value="{{ annee }}" {% if annee_filter == annee|stringformat:"s" %}selected{% endif %}>{{ annee }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="flex:1;min-width:160px;">
+      <label class="text-xs text-muted mb-1" style="display:block;">Catégorie</label>
+      <select name="categorie" class="form-control" style="height:38px;">
+        <option value="">Toutes les catégories</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}" {% if cat_filter == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nom }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="flex:1;min-width:160px;">
+      <label class="text-xs text-muted mb-1" style="display:block;">Confidentialité</label>
+      <select name="confidentialite" class="form-control" style="height:38px;">
+        <option value="">Tous les niveaux</option>
+        <option value="public" {% if conf_filter == "public" %}selected{% endif %}>Public</option>
+        <option value="interne" {% if conf_filter == "interne" %}selected{% endif %}>Interne</option>
+        <option value="confidentiel" {% if conf_filter == "confidentiel" %}selected{% endif %}>Confidentiel</option>
+        <option value="secret" {% if conf_filter == "secret" %}selected{% endif %}>Secret</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button type="submit" class="btn btn-primary" style="height:38px;"><i class="bi bi-funnel"></i> Filtrer</button>
+      <a href="{% url 'consultation_archives' %}" class="btn btn-outline" style="height:38px;"><i class="bi bi-x-lg"></i></a>
+    </div>
+  </div>
+</form>
 
-  {% if documents.has_other_pages %}
-  <nav aria-label="Page navigation" class="mt-4 mb-3">
-    <ul class="pagination justify-content-center">
-      {% if documents.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page={{ documents.previous_page_number }}">&laquo;</a></li>
-      {% endif %}
-      {% for i in documents.paginator.page_range %}
-        <li class="page-item {% if documents.number == i %}active{% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endfor %}
-      {% if documents.has_next %}
-        <li class="page-item"><a class="page-link" href="?page={{ documents.next_page_number }}">&raquo;</a></li>
-      {% endif %}
-    </ul>
-  </nav>
-  {% endif %}
+<!-- ARBORESCENCE -->
+{% if archives %}
+  {% for annee, categories_docs in archives.items %}
+  <div class="card mb-3">
+    <!-- En-tête Année (accordéon) -->
+    <div class="card-header" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;"
+         onclick="toggleAccordion(this)">
+      <span class="card-title" style="font-size:16px;font-weight:700;">
+        <i class="bi bi-calendar3 me-2 text-primary"></i>{{ annee }}
+        <span class="badge-custom badge-interne ms-2" style="font-size:11px;font-weight:500;">
+          {% for cat, docs in categories_docs.items %}{% for d in docs %}{% empty %}{% endfor %}{% endfor %}
+          {{ categories_docs.values|length }} catégorie(s)
+        </span>
+      </span>
+      <i class="bi bi-chevron-down toggle-icon" style="transition:transform .25s;color:#64748b;"></i>
+    </div>
 
-  {% else %}
-  <div class="empty-state"><div class="empty-icon"><i class="bi bi-archive"></i></div><div class="empty-title">Aucun document archivé</div></div>
-  {% endif %}
-</div>
+    <!-- Contenu accordéon -->
+    <div class="accordion-body" style="display:block;">
+      {% for cat_nom, docs in categories_docs.items %}
+      <div style="border-top:1px solid #f1f5f9;">
+        <!-- Sous-en-tête Catégorie -->
+        <div style="padding:12px 20px;background:#f8fafc;display:flex;align-items:center;gap:10px;">
+          <i class="bi bi-folder-fill" style="color:#f59e0b;font-size:15px;"></i>
+          <span class="fw-600 text-sm">{{ cat_nom }}</span>
+          <span style="background:#e2e8f0;border-radius:12px;padding:2px 10px;font-size:11px;color:#64748b;font-weight:600;">
+            {{ docs|length }} doc(s)
+          </span>
+        </div>
+        <!-- Liste des documents -->
+        <table class="table mb-0" style="margin:0;">
+          <tbody>
+            {% for doc in docs %}
+            <tr>
+              <td style="width:40%;padding:10px 20px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <i class="{{ doc.get_icon }}" style="font-size:18px;flex-shrink:0;"></i>
+                  <div>
+                    <div class="fw-500 text-sm">{{ doc.titre|truncatechars:45 }}</div>
+                    <div class="text-xs text-muted">{{ doc.get_taille }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-sm" style="width:18%;">
+                {% if doc.archiviste %}{{ doc.archiviste.get_full_name }}{% else %}—{% endif %}
+              </td>
+              <td style="width:15%;">
+                <span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span>
+              </td>
+              <td class="text-xs text-muted" style="width:12%;">{{ doc.created_at|date:"d/m/Y" }}</td>
+              <td style="width:15%;">
+                <div class="table-actions">
+                  <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm" title="Voir">
+                    <i class="bi bi-eye"></i>
+                  </a>
+                  <a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm" title="Télécharger">
+                    <i class="bi bi-download"></i>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon"><i class="bi bi-archive"></i></div>
+    <div class="empty-title">Aucun document archivé</div>
+    <div class="empty-text">Les filtres actifs n'ont retourné aucun résultat.</div>
+    <a href="{% url 'consultation_archives' %}" class="btn btn-outline mt-3"><i class="bi bi-x-circle me-1"></i>Effacer les filtres</a>
+  </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle-icon');
+  if (body.style.display === 'none') {
+    body.style.display = 'block';
+    icon.style.transform = 'rotate(0deg)';
+  } else {
+    body.style.display = 'none';
+    icon.style.transform = 'rotate(-90deg)';
+  }
+}
+</script>
 {% endblock %}

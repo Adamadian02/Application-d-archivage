@@ -1,5 +1,11 @@
 import os
 from pathlib import Path
+import socket
+
+# Patch pour corriger les noms d'hôtes Windows invalides (ex: avec des virgules) qui bloquent SMTP
+if ',' in socket.getfqdn() or ' ' in socket.getfqdn():
+    socket.getfqdn = lambda name='': 'localhost'
+
 # pyrefly: ignore [missing-import]
 from decouple import config
 
@@ -59,10 +65,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ged_universitaire.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': config(
+        'DATABASE_URL',
+        default=f"sqlite:///{BASE_DIR}/db.sqlite3",
+        cast=lambda v: {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='ged_db'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
+            'HOST': config('DB_HOST', default='127.0.0.1'),
+            'PORT': config('DB_PORT', default='5432'),
+        } if not v.startswith('sqlite') else {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    )
 }
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -95,4 +112,14 @@ LOGIN_URL = '/auth/connexion/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/auth/connexion/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# --- Configuration Email (Gmail SMTP) ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_LOCALHOST = 'localhost'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER', default='noreply@ged-uganc.ci')
+

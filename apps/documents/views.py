@@ -85,17 +85,55 @@ def supprimer_document(request, pk):
         return redirect('liste_documents')
     return render(request, 'archiviste/document_confirm_delete.html', {'document': doc})
 
+
+def _check_document_access(user, doc):
+    """
+    Vérifie si l'utilisateur peut accéder au document.
+    Retourne (can_access: bool, can_download: bool)
+
+    Matrice :
+      Admin / Archiviste propriétaire → accès total
+      Autre archiviste :
+        - confidentiel / secret  → refusé
+        - interne                → lecture seule (pas de téléchargement)
+        - public                 → accès total
+    """
+    if user.is_admin():
+        return True, True
+    if doc.archiviste == user:
+        return True, True
+    # Autre archiviste
+    if doc.confidentialite in ('confidentiel', 'secret'):
+        return False, False
+    if doc.confidentialite == 'interne':
+        return True, False   # peut voir, ne peut pas télécharger
+    return True, True        # public
+
+
 @login_required
 def detail_document(request, pk):
     doc = get_object_or_404(Document, pk=pk)
-    return render(request, 'archiviste/document_detail.html', {'document': doc})
+    can_access, can_download = _check_document_access(request.user, doc)
+    if not can_access:
+        messages.error(request, "Vous n'êtes pas autorisé à consulter ce document (niveau de confidentialité insuffisant).")
+        return redirect('liste_documents')
+    return render(request, 'archiviste/document_detail.html', {
+        'document': doc,
+        'can_download': can_download,
+    })
+
 
 @login_required
 def telecharger_document(request, pk):
     doc = get_object_or_404(Document, pk=pk)
+    can_access, can_download = _check_document_access(request.user, doc)
+    if not can_access or not can_download:
+        messages.error(request, "Vous n'êtes pas autorisé à télécharger ce document.")
+        return redirect('detail_document', pk=pk)
     Historique.objects.create(utilisateur=request.user, action='telechargement', description=f'Téléchargement du document "{doc.titre}"')
     response = FileResponse(doc.fichier.open('rb'), as_attachment=True, filename=doc.fichier.name.split('/')[-1])
     return response
+
 
 @login_required
 def recherche_documents(request):
@@ -131,13 +169,49 @@ def recherche_documents(request):
         'date_debut': date_debut, 'date_fin': date_fin, 'docs_count': paginator.count
     })
 
+
 @login_required
 def consultation_archives(request):
+    from collections import defaultdict
+    # pyrefly: ignore [missing-import]
+    from django.core.exceptions import PermissionDenied
     if not request.user.is_admin():
-        from django.core.exceptions import PermissionDenied
         raise PermissionDenied
-    docs = Document.objects.filter(statut='archive').order_by('-created_at')
-    paginator = Paginator(docs, 20)
-    page_number = request.GET.get('page')
-    docs_page = paginator.get_page(page_number)
-    return render(request, 'admin_ged/archives.html', {'documents': docs_page})
+
+    annee_filter = request.GET.get('annee', '')
+    cat_filter   = request.GET.get('categorie', '')
+    conf_filter  = request.GET.get('confidentialite', '')
+
+    docs = Document.objects.filter(statut='archive').select_related('categorie', 'archiviste').order_by('-created_at')
+
+    if annee_filter:
+        docs = docs.filter(created_at__year=annee_filter)
+    if cat_filter:
+        docs = docs.filter(categorie__id=cat_filter)
+    if conf_filter:
+        docs = docs.filter(confidentialite=conf_filter)
+
+    # Construction arborescence {année: {nom_catégorie: [documents]}}
+    archives_par_annee = defaultdict(lambda: defaultdict(list))
+    annees_disponibles = set()
+    for doc in docs:
+        annee = doc.created_at.year
+        cat_nom = doc.categorie.nom if doc.categorie else 'Sans catégorie'
+        archives_par_annee[annee][cat_nom].append(doc)
+        annees_disponibles.add(annee)
+
+    # Tri : années décroissantes, catégories alphabétiques
+    archives_organisees = {
+        annee: dict(sorted(cats.items()))
+        for annee, cats in sorted(archives_par_annee.items(), reverse=True)
+    }
+
+    return render(request, 'admin_ged/archives.html', {
+        'archives': archives_organisees,
+        'annees': sorted(annees_disponibles, reverse=True),
+        'categories': Categorie.objects.all(),
+        'annee_filter': annee_filter,
+        'cat_filter': cat_filter,
+        'conf_filter': conf_filter,
+        'total': docs.count(),
+    })
