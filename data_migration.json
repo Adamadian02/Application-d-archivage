@@ -1,0 +1,930 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "42nagnn4iymecru7vwpvax6k8eth0zcp",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCmZaC4dO8ZCMyAVA0kpV0Z765NutDtf-_9l_BhW4vfelr8zOIsQJx-txjokeoO-B7qrUlqdV3mKHdFHrTLa-P0vBzu30EJvXxrNw2knNEm8xQSjBaANKo8xozJDolRo9ZgQ2QDllXOjOQcRgZCYi3eH9W3OAo:1wUCNv:qefv3V4OyrqJwCrXl9djq9DyViwn0GIu-TcyfPX8z-M",
+    "expire_date": "2026-06-15T23:49:31.156Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4qfd42kr8lgqo4d37ptvm2ccneekgdcv",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSGD-aZM7zOghV2CkwgkY1dR7h4huUjaNzPvzQIcewlHpy2syK5sZpffLUJ6Uh0AH1DvjadW922NfCj8pJ0vDel1O92_gwK9jDqDEhadVl5kZ2QmnYwFoKSkiyiFmROSRDVZH2W0kbIGAK_VpK00iX2--wE4Zg:1wPJbZ:irxkCfPiT6SnZj1nau1MT7V87WbI_dQPFtZNE1_fe4E",
+    "expire_date": "2026-06-02T12:31:25.297Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8wppyc8qzlhzwhl78sfhd50edka7rah9",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pDCYBlcuu8ZyMCAVA0kpV0Z765NutDtf-_9l_C0rcVvPS1-ZnERSpx-t0DxkeoO-E711mRsdV3mIHdFHrTLqXF6Xg_376BQL996TMgasoIBaMyWzpYRh4gGtAoUjM5IwEjsQrI5gzEwmshOoYs8GCfeH-C8N98:1wPJec:zZPuwdUafjp8CF3IUVMSZ73DRHmfbjfeb2ChAM5bAFE",
+    "expire_date": "2026-06-02T12:34:34.607Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ncawjfdn0bcfxjg2bpg5ltpl7skidp73",
+  "fields": {
+    "session_data": ".eJxVjEsOAiEQBe_C2hBs-TQu3XsG0jQgowaSYWZlvLtOMgvdvqp6LxFoXWpYR57DlMRZaHH43SLxI7cNpDu1W5fc2zJPUW6K3OmQ157y87K7fweVRv3W0dvi0UNxpBUobVM0mZ3lk_dABiwWjMeIVAhsUZzIKGMAkdE5zkq8P9xdN7w:1wRuRr:fBhFteUqWfUQhstwzrpWDWTuPthCmn16HCtC9f-lXnc",
+    "expire_date": "2026-06-09T16:16:07.144Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "pjghel7l8tshadeq7t66givxfpzd3qje",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSGD-aZM7zOghV2CkwgkY1dR7h4huUjaNzPvzQIcewlHpy2syK5sZpffLUJ6Uh0AH1DvjadW922NfCj8pJ0vDel1O92_gwK9jDqDEhadVl5kZ2QmnYwFoKSkiyiFmROSRDVZH2W0kbIGAK_VpK00iX2--wE4Zg:1wUBKN:5VIJS3QP3YUWYXiWagB2ON5spTv8qTnGNK907HWWh4Y",
+    "expire_date": "2026-06-15T22:41:47.828Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rv1rt7h1k6xcs557kmldmqj8256yyab0",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pDCYBlcuu8ZyMCAVA0kpV0Z765NutDtf-_9l_C0rcVvPS1-ZnERSpx-t0DxkeoO-E711mRsdV3mIHdFHrTLqXF6Xg_376BQL996TMgasoIBaMyWzpYRh4gGtAoUjM5IwEjsQrI5gzEwmshOoYs8GCfeH-C8N98:1wRuES:z1YYweW5EgPhGTEEEo4fi3ZTgfFq_EWwKJd9oSOhz5A",
+    "expire_date": "2026-06-09T16:02:16.133Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vqliu8h8av31o12cgt3x1ofj4xx3jt9w",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hCmZaC4dO8ZCMyAVA0kpV0Z765NutDtf-_9l_BhW4vfelr8zOIsQJx-txjokeoO-B7qrUlqdV3mKHdFHrTLa-P0vBzu30EJvXxrNw2knNEm8xQSjBaANKo8xozJDolRo9ZgQ2QDllXOjOQcRgZCYi3eH9W3OAo:1wUBKt:gBuBhFg95Z32lEN-fUnwhYaaPkLz6oyXNFD7zBN3gxM",
+    "expire_date": "2026-06-15T22:42:19.898Z"
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$05GBtKJvRKoYYAKhhutdWF$1NeQ8BWMohSKY/Ef/3bIczdrYlD/zcjVB2wRJP5b8uU=",
+    "last_login": "2026-06-01T23:49:31.125Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Directeur",
+    "last_name": "Faculte",
+    "email": "wisemanibra2@gmail.com",
+    "is_staff": true,
+    "date_joined": "2026-05-18T14:22:31.585Z",
+    "role": "administrateur",
+    "photo": "photos/CI.jpg",
+    "telephone": "",
+    "departement": "",
+    "is_active": true,
+    "created_at": "2026-05-18T14:22:32.584Z",
+    "updated_at": "2026-06-01T22:41:47.816Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$wxog1SvRTh1bJgDf3YIpjA$sOl8vG54U56CHFEqadrNlbDg1LiHbenqX8+24LPDfbg=",
+    "last_login": "2026-05-26T06:29:54.377Z",
+    "is_superuser": false,
+    "username": "archiviste",
+    "first_name": "Marie",
+    "last_name": "Camara",
+    "email": "",
+    "is_staff": false,
+    "date_joined": "2026-05-19T12:30:31.121Z",
+    "role": "archiviste",
+    "photo": "",
+    "telephone": "",
+    "departement": "",
+    "is_active": true,
+    "created_at": "2026-05-19T12:30:31.775Z",
+    "updated_at": "2026-05-19T12:30:31.775Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 1,
+  "fields": {
+    "nom": "urgent"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 2,
+  "fields": {
+    "nom": "archivÃ©"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 3,
+  "fields": {
+    "nom": "confidentiel"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 4,
+  "fields": {
+    "nom": "rapport"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 5,
+  "fields": {
+    "nom": "2024"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 6,
+  "fields": {
+    "nom": "officiel"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 7,
+  "fields": {
+    "nom": "Sco1"
+  }
+},
+{
+  "model": "documents.tag",
+  "pk": 8,
+  "fields": {
+    "nom": "Sco2"
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 1,
+  "fields": {
+    "titre": "produit",
+    "description": "",
+    "fichier": "documents/2026/05/KANDJOU_Rapport_Enrichi_IEEE.docx",
+    "categorie": 6,
+    "archiviste": 3,
+    "confidentialite": "secret",
+    "statut": "archive",
+    "created_at": "2026-05-19T12:59:59.276Z",
+    "updated_at": "2026-05-19T13:00:13.298Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 2,
+  "fields": {
+    "titre": "Raport RH_dela Scolarité",
+    "description": "CECI EST UN TEST\r\nCECI EST UN TEST",
+    "fichier": "documents/2026/05/modele_physique.docx",
+    "categorie": 7,
+    "archiviste": 3,
+    "confidentialite": "public",
+    "statut": "archive",
+    "created_at": "2026-05-26T06:46:33.466Z",
+    "updated_at": "2026-05-26T06:53:51.331Z",
+    "tags": [
+      7,
+      8
+    ]
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 3,
+  "fields": {
+    "titre": "Courier de formation à ODC ratoma",
+    "description": "Service des relations extérieurs de Gamal",
+    "fichier": "documents/2026/05/MCD_Gestion_Etudiants.png",
+    "categorie": 6,
+    "archiviste": 3,
+    "confidentialite": "interne",
+    "statut": "archive",
+    "created_at": "2026-05-26T06:56:45.324Z",
+    "updated_at": "2026-05-26T07:01:27.157Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 4,
+  "fields": {
+    "titre": "Rapport final des notes NTIC cohorte17",
+    "description": "Rapport de fin d'année 2025-2026 portant sur les notes du département NTIC de la cohorte 17",
+    "fichier": "documents/2026/05/LICENCE_2_Dep_NTIC_2024-2025.xlsx",
+    "categorie": 8,
+    "archiviste": 3,
+    "confidentialite": "confidentiel",
+    "statut": "archive",
+    "created_at": "2026-05-26T06:59:06.103Z",
+    "updated_at": "2026-05-26T07:01:31.748Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 5,
+  "fields": {
+    "titre": "Autorisation d'aller à la rencontre de l'entreprise Rio Tinto",
+    "description": "Trouver des points d'entente entre le monde universitaire et professionnel, pour faciliter l'insertion professionnel des étudiants et améliorer nos programmes en fonction des besoins de l'entreprise.",
+    "fichier": "documents/2026/05/WMAN.docx",
+    "categorie": 12,
+    "archiviste": 3,
+    "confidentialite": "interne",
+    "statut": "archive",
+    "created_at": "2026-05-26T07:07:56.467Z",
+    "updated_at": "2026-05-26T07:08:16.912Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 6,
+  "fields": {
+    "titre": "TEST",
+    "description": "TEST",
+    "fichier": "documents/2026/05/Cesar.docx",
+    "categorie": 6,
+    "archiviste": 3,
+    "confidentialite": "confidentiel",
+    "statut": "archive",
+    "created_at": "2026-05-26T16:04:22.410Z",
+    "updated_at": "2026-05-26T16:05:45.201Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 7,
+  "fields": {
+    "titre": "test",
+    "description": "test",
+    "fichier": "documents/2026/05/Cesar_Hj0CNgF.docx",
+    "categorie": 10,
+    "archiviste": null,
+    "confidentialite": "confidentiel",
+    "statut": "archive",
+    "created_at": "2026-05-26T16:17:48.431Z",
+    "updated_at": "2026-05-26T16:18:00.224Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 8,
+  "fields": {
+    "titre": "CI26-06-01 Programme de formation",
+    "description": "g vfjegrekljuvrhke kvehkur fv",
+    "fichier": "documents/2026/06/Englishforcomputerscience_1.pdf",
+    "categorie": 6,
+    "archiviste": 3,
+    "confidentialite": "interne",
+    "statut": "archive",
+    "created_at": "2026-06-01T22:46:44.642Z",
+    "updated_at": "2026-06-01T22:47:49.871Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 9,
+  "fields": {
+    "titre": "Rapport de fin d'année",
+    "description": "ceci est un test\r\nceci est un test",
+    "fichier": "documents/2026/06/Systeme_GED_UGANC_Avant_Projet.docx",
+    "categorie": 6,
+    "archiviste": 3,
+    "confidentialite": "confidentiel",
+    "statut": "archive",
+    "created_at": "2026-06-02T10:28:40.368Z",
+    "updated_at": "2026-06-02T10:28:52.659Z",
+    "tags": []
+  }
+},
+{
+  "model": "documents.document",
+  "pk": 10,
+  "fields": {
+    "titre": "rapport de fin d'année 2024",
+    "description": "ceci est un test\r\nceci est un test",
+    "fichier": "documents/2026/06/Systeme_GED_UGANC_Avant_Projet_ZNMdshY.docx",
+    "categorie": 12,
+    "archiviste": 3,
+    "confidentialite": "confidentiel",
+    "statut": "archive",
+    "created_at": "2026-06-02T13:59:06.699Z",
+    "updated_at": "2026-06-02T13:59:24.428Z",
+    "tags": []
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 6,
+  "fields": {
+    "nom": "arrive",
+    "description": "",
+    "couleur": "success",
+    "parent": null,
+    "created_at": "2026-05-19T12:58:48.589Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 7,
+  "fields": {
+    "nom": "Administratif",
+    "description": "Documents administratifs",
+    "couleur": "primary",
+    "parent": null,
+    "created_at": "2026-05-26T06:24:18.474Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 8,
+  "fields": {
+    "nom": "AcadÃ©mique",
+    "description": "Documents acadÃ©miques et pÃ©dagogiques",
+    "couleur": "success",
+    "parent": null,
+    "created_at": "2026-05-26T06:24:18.477Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 9,
+  "fields": {
+    "nom": "Financier",
+    "description": "Documents financiers et comptables",
+    "couleur": "warning",
+    "parent": null,
+    "created_at": "2026-05-26T06:24:18.492Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 10,
+  "fields": {
+    "nom": "RH",
+    "description": "Ressources humaines et personnel",
+    "couleur": "info",
+    "parent": null,
+    "created_at": "2026-05-26T06:24:18.507Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 11,
+  "fields": {
+    "nom": "Juridique",
+    "description": "Documents juridiques et rÃ©glementaires",
+    "couleur": "danger",
+    "parent": null,
+    "created_at": "2026-05-26T06:24:18.519Z"
+  }
+},
+{
+  "model": "categories.categorie",
+  "pk": 12,
+  "fields": {
+    "nom": "Depart",
+    "description": "Courier de départ à partir de la faculté vers l'exterieur",
+    "couleur": "secondary",
+    "parent": null,
+    "created_at": "2026-05-26T07:03:25.489Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 1,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au systÃ¨me",
+    "ip_address": null,
+    "created_at": "2026-05-18T14:22:34.530Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 2,
+  "fields": {
+    "utilisateur": 1,
+    "action": "upload",
+    "description": "Upload du document \"Rapport annuel 2024\"",
+    "ip_address": null,
+    "created_at": "2026-05-18T14:22:34.606Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 3,
+  "fields": {
+    "utilisateur": 1,
+    "action": "modification",
+    "description": "Modification du document \"Budget 2024\"",
+    "ip_address": null,
+    "created_at": "2026-05-18T14:22:34.681Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 4,
+  "fields": {
+    "utilisateur": 1,
+    "action": "creation_utilisateur",
+    "description": "CrÃ©ation du compte marie.camara",
+    "ip_address": null,
+    "created_at": "2026-05-18T14:22:34.764Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 5,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:28:50.736Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 6,
+  "fields": {
+    "utilisateur": 1,
+    "action": "deconnexion",
+    "description": "Déconnexion du système",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:31:02.881Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 7,
+  "fields": {
+    "utilisateur": 3,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:31:25.185Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 8,
+  "fields": {
+    "utilisateur": 3,
+    "action": "suppression_categorie",
+    "description": "Suppression de la catégorie Juridique",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:32:40.107Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 9,
+  "fields": {
+    "utilisateur": 3,
+    "action": "suppression_categorie",
+    "description": "Suppression de la catégorie AcadÃ©mique",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:32:42.723Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 10,
+  "fields": {
+    "utilisateur": 3,
+    "action": "suppression_categorie",
+    "description": "Suppression de la catégorie Administratif",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:32:45.372Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 11,
+  "fields": {
+    "utilisateur": 3,
+    "action": "suppression_categorie",
+    "description": "Suppression de la catégorie Financier",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:32:48.205Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 12,
+  "fields": {
+    "utilisateur": 3,
+    "action": "suppression_categorie",
+    "description": "Suppression de la catégorie RH",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:32:51.188Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 13,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:34:34.483Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 14,
+  "fields": {
+    "utilisateur": 3,
+    "action": "creation_categorie",
+    "description": "Création de la catégorie arrive",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:58:48.720Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 15,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"produit\"",
+    "ip_address": null,
+    "created_at": "2026-05-19T12:59:59.478Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 16,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"produit\"",
+    "ip_address": null,
+    "created_at": "2026-05-19T13:00:13.442Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 17,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-05-26T06:26:27.557Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 18,
+  "fields": {
+    "utilisateur": 1,
+    "action": "deconnexion",
+    "description": "Déconnexion du système",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:29:40.584Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 19,
+  "fields": {
+    "utilisateur": 3,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-05-26T06:29:54.388Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 20,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"Raport RH_dela Scolarité\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:46:33.543Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 21,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-05-26T06:51:42.335Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 22,
+  "fields": {
+    "utilisateur": 1,
+    "action": "modification",
+    "description": "Modification du document \"Raport RH_dela Scolarité\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:53:24.874Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 23,
+  "fields": {
+    "utilisateur": 1,
+    "action": "archivage",
+    "description": "Archivage du document \"Raport RH_dela Scolarité\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:53:51.351Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 24,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"Courier de formation à ODC ratoma\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:56:45.357Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 25,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"Rapport final des notes NTIC cohorte17\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T06:59:06.124Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 26,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"Courier de formation à ODC ratoma\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:01:27.172Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 27,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"Rapport final des notes NTIC cohorte17\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:01:31.756Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 28,
+  "fields": {
+    "utilisateur": 3,
+    "action": "creation_categorie",
+    "description": "Création de la catégorie Depart",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:03:25.502Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 29,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"Autorisation d'aller à la rencontre de l'entreprise Rio Tinto\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:07:56.489Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 30,
+  "fields": {
+    "utilisateur": 3,
+    "action": "telechargement",
+    "description": "Téléchargement du document \"Autorisation d'aller à la rencontre de l'entreprise Rio Tinto\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:08:09.964Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 31,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"Autorisation d'aller à la rencontre de l'entreprise Rio Tinto\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T07:08:16.931Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 32,
+  "fields": {
+    "utilisateur": 1,
+    "action": "deconnexion",
+    "description": "Déconnexion du système",
+    "ip_address": null,
+    "created_at": "2026-05-26T15:59:58.233Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 33,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-05-26T16:02:16.116Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 34,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"TEST\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:04:22.425Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 35,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"TEST\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:05:45.217Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 36,
+  "fields": {
+    "utilisateur": 1,
+    "action": "creation_utilisateur",
+    "description": "Création du compte mouc",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:15:32.793Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 37,
+  "fields": {
+    "utilisateur": null,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-05-26T16:16:07.130Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 38,
+  "fields": {
+    "utilisateur": null,
+    "action": "upload",
+    "description": "Upload du document \"test\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:17:48.445Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 39,
+  "fields": {
+    "utilisateur": null,
+    "action": "archivage",
+    "description": "Archivage du document \"test\"",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:18:00.241Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 40,
+  "fields": {
+    "utilisateur": 1,
+    "action": "suppression_utilisateur",
+    "description": "Suppression du compte mouc",
+    "ip_address": null,
+    "created_at": "2026-05-26T16:19:06.106Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 41,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-06-01T22:42:19.886Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 42,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"CI26-06-01 Programme de formation\"",
+    "ip_address": null,
+    "created_at": "2026-06-01T22:46:44.656Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 43,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"CI26-06-01 Programme de formation\"",
+    "ip_address": null,
+    "created_at": "2026-06-01T22:47:49.890Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 44,
+  "fields": {
+    "utilisateur": 1,
+    "action": "connexion",
+    "description": "Connexion au système",
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-06-01T23:49:31.135Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 45,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"Rapport de fin d'année\"",
+    "ip_address": null,
+    "created_at": "2026-06-02T10:28:40.382Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 46,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"Rapport de fin d'année\"",
+    "ip_address": null,
+    "created_at": "2026-06-02T10:28:52.675Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 47,
+  "fields": {
+    "utilisateur": 3,
+    "action": "upload",
+    "description": "Upload du document \"rapport de fin d'année 2024\"",
+    "ip_address": null,
+    "created_at": "2026-06-02T13:59:06.719Z"
+  }
+},
+{
+  "model": "historique.historique",
+  "pk": 48,
+  "fields": {
+    "utilisateur": 3,
+    "action": "archivage",
+    "description": "Archivage du document \"rapport de fin d'année 2024\"",
+    "ip_address": null,
+    "created_at": "2026-06-02T13:59:24.447Z"
+  }
+}
+]
