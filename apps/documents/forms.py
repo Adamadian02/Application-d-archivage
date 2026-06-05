@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from django import forms
 from .models import Document, Tag
 
@@ -32,3 +33,14 @@ class DocumentForm(forms.ModelForm):
                         tag, _ = Tag.objects.get_or_create(nom=tag_nom)
                         doc.tags.add(tag)
         return doc
+
+class LegacyDocumentForm(DocumentForm):
+    class Meta(DocumentForm.Meta):
+        fields = ['titre', 'description', 'fichier', 'categorie', 'confidentialite', 'created_at']
+        widgets = DocumentForm.Meta.widgets.copy()
+        widgets['created_at'] = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Surcharge du label pour être plus explicite sur cette interface
+        self.fields['created_at'].label = "Date d'origine de l'archive (JJ/MM/AAAA)"

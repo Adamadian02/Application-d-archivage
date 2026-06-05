@@ -73,6 +73,9 @@
       <a href="{% url 'liste_documents' %}" class="sidebar-link {% if request.resolver_match.url_name == 'liste_documents' %}active{% endif %}">
         <i class="bi bi-folder2-open"></i> Mes documents
       </a>
+      <a href="{% url 'upload_ancienne_archive' %}" class="sidebar-link {% if request.resolver_match.url_name == 'upload_ancienne_archive' %}active{% endif %}">
+        <i class="bi bi-clock-history"></i> Archive Historique
+      </a>
       <a href="{% url 'recherche_documents' %}" class="sidebar-link {% if request.resolver_match.url_name == 'recherche_documents' %}active{% endif %}">
         <i class="bi bi-search"></i> Recherche
       </a>

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.http import FileResponse
 from .models import Document
-from .forms import DocumentForm
+from .forms import DocumentForm, LegacyDocumentForm
 from apps.historique.models import Historique
 from apps.categories.models import Categorie
 
@@ -43,6 +43,23 @@ def upload_document(request):
         messages.success(request, f'Document "{doc.titre}" uploadé avec succès.')
         return redirect('liste_documents')
     return render(request, 'archiviste/upload.html', {'form': form})
+
+@login_required
+def upload_ancienne_archive(request):
+    if not request.user.is_archiviste():
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
+    
+    form = LegacyDocumentForm(request.POST or None, request.FILES or None)
+    if request.method == 'POST' and form.is_valid():
+        doc = form.save(commit=False)
+        doc.archiviste = request.user
+        doc.save()
+        form.save() # Gère les tags
+        Historique.objects.create(utilisateur=request.user, action='upload_archive', description=f'Upload d\'une archive historique "{doc.titre}"')
+        messages.success(request, f'Ancienne archive "{doc.titre}" intégrée avec succès.')
+        return redirect('liste_documents')
+    return render(request, 'archiviste/upload_ancienne.html', {'form': form})
 
 @login_required
 def modifier_document(request, pk):
@@ -122,5 +139,28 @@ def consultation_archives(request):
     if not request.user.is_admin():
         from django.core.exceptions import PermissionDenied
         raise PermissionDenied
-    docs = Document.objects.all()
-    return render(request, 'admin_ged/archives.html', {'documents': docs})
+    
+    # 1. Récupérer tous les documents
+    docs = Document.objects.all().order_by('-created_at')
+    
+    # 2. Organisation par Année et Catégorie
+    archives_organisees = {}
+    for doc in docs:
+        annee = doc.created_at.year
+        if annee not in archives_organisees:
+            archives_organisees[annee] = {}
+        
+        cat_nom = doc.categorie.nom if doc.categorie else "Sans catégorie"
+        if cat_nom not in archives_organisees[annee]:
+            archives_organisees[annee][cat_nom] = []
+        
+        archives_organisees[annee][cat_nom].append(doc)
+
+    # Notifications pour base.html
+    notifications = Historique.objects.select_related('utilisateur').order_by('-created_at')[:5]
+
+    return render(request, 'admin_ged/archives.html', {
+        'archives_organisees': archives_organisees,
+        'notifications': notifications,
+        'total_docs': docs.count()
+    })

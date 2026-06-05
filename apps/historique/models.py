@@ -15,6 +15,7 @@ class Historique(models.Model):
         ('suppression_utilisateur', 'Suppression utilisateur'),
         ('creation_categorie', 'Création catégorie'),
         ('suppression_categorie', 'Suppression catégorie'),
+        ('upload_archive', 'Upload archive historique'),
         ('autre', 'Autre'),
     ]
     ICON_MAP = {
@@ -30,6 +31,7 @@ class Historique(models.Model):
         'suppression_utilisateur': 'bi-person-x',
         'creation_categorie': 'bi-folder-plus',
         'suppression_categorie': 'bi-folder-x',
+        'upload_archive': 'bi-clock-history',
         'autre': 'bi-info-circle',
     }
     utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)

@@ -11,9 +11,13 @@ def historique_systeme(request):
     action_filter = request.GET.get('action', '')
     if action_filter:
         logs = logs.filter(action=action_filter)
+    # Notifications réelles pour la navbar (base.html)
+    notifications = Historique.objects.select_related('utilisateur').order_by('-created_at')[:5]
+    
     return render(request, 'admin_ged/historique.html', {
         'logs': logs, 'action_filter': action_filter,
-        'action_choices': Historique.ACTION_CHOICES
+        'action_choices': Historique.ACTION_CHOICES,
+        'notifications': notifications
     })
 
 @login_required

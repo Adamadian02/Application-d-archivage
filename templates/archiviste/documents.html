@@ -8,8 +8,9 @@
     <h1 class="page-title">Gestion des Documents</h1>
     <p class="page-subtitle">{{ documents.count }} document(s) trouvé(s)</p>
   </div>
-  <div class="page-actions">
-    <a href="{% url 'upload_document' %}" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Uploader</a>
+  <div class="page-actions d-flex gap-2">
+    <a href="{% url 'upload_ancienne_archive' %}" class="btn btn-outline-primary"><i class="bi bi-clock-history"></i> Ancienne Archive</a>
+    <a href="{% url 'upload_document' %}" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Nouveau Document</a>
   </div>
 </div>
 

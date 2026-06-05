@@ -1,1 +1,3 @@
+# Ne jamais écraser les configs de prod
+ged_universitaire/settings.py
 env /

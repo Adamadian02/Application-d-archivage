@@ -1,5 +1,9 @@
+# pyrefly: ignore [missing-import]
 from django.db import models
+# pyrefly: ignore [missing-import]
 from django.conf import settings
+# pyrefly: ignore [missing-import]
+from django.utils import timezone
 from apps.categories.models import Categorie
 import os
 
@@ -27,7 +31,7 @@ class Document(models.Model):
     archiviste = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='documents')
     confidentialite = models.CharField(max_length=20, choices=CONFIDENTIALITE_CHOICES, default='interne')
     statut = models.CharField(max_length=20, choices=STATUT_CHOICES, default='actif')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     def get_extension(self):
