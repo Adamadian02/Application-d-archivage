@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Upload Archive Historique — GED{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{% url 'liste_documents' %}">Documents</a></li>
+<li class="breadcrumb-item active">Archive Historique</li>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Intégrer une ancienne archive</h1>
+    <p class="page-subtitle">Numérisez et classez un document issu d'années antérieures</p>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+      {% csrf_token %}
+
+      <!-- Upload zone -->
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title"><i class="bi bi-cloud-upload me-2 text-primary"></i>Fichier</span></div>
+        <div class="card-body">
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon"><i class="bi bi-clock-history text-secondary"></i></div>
+            <p class="upload-text">Glissez votre ancien fichier ici ou cliquez pour choisir</p>
+            <p class="upload-sub">PDF, Word, Excel, PowerPoint, Images — Max 50 MB</p>
+          </div>
+          {{ form.fichier }}
+        </div>
+      </div>
+
+      <!-- Métadonnées -->
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title"><i class="bi bi-info-circle me-2 text-primary"></i>Métadonnées de l'Archive</span></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12 col-md-8">
+              <label class="form-label">Titre <span class="text-danger">*</span></label>
+              {{ form.titre }}
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label">Date d'origine <span class="text-danger">*</span></label>
+              {{ form.created_at }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Description / Remarques</label>
+              {{ form.description }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Catégorie</label>
+              {{ form.categorie }}
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label">Niveau de confidentialité</label>
+              {{ form.confidentialite }}
+            </div>
+            <div class="col-12">
+              <label class="form-label">Tags</label>
+              {{ form.tags_input }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 justify-content-end">
+        <a href="{% url 'liste_documents' %}" class="btn btn-outline">Annuler</a>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Enregistrer l'archive</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Info sidebar -->
+  <div class="col-12 col-lg-4">
+    <div class="card mb-3 border-danger">
+      <div class="card-header bg-danger text-white"><span class="card-title"><i class="bi bi-exclamation-triangle me-2"></i>Attention</span></div>
+      <div class="card-body">
+        <p class="text-sm mb-0">Vous êtes dans l'interface de numérisation d'archives historiques.</p>
+        <p class="text-sm mt-2 mb-0">Assurez-vous de bien sélectionner la <strong>date d'origine correspondante</strong> pour ne pas fausser la chronologie des dossiers (Arrivées, Départs, Instances).</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
