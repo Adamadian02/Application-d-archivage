@@ -80,9 +80,6 @@
         <i class="bi bi-search"></i> Recherche
       </a>
       <div class="sidebar-section"><div class="sidebar-section-title">Administration</div></div>
-      <a href="{% url 'gestion_utilisateurs' %}" class="sidebar-link {% if request.resolver_match.url_name == 'gestion_utilisateurs' %}active{% endif %}">
-        <i class="bi bi-people"></i> Utilisateurs
-      </a>
       <a href="{% url 'liste_categories' %}" class="sidebar-link {% if request.resolver_match.url_name == 'liste_categories' %}active{% endif %}">
         <i class="bi bi-tags"></i> Catégories
       </a>

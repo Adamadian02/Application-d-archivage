@@ -1,7 +1,12 @@
+#pyrefly: ignore [missing-import]
 from django.shortcuts import render, redirect, get_object_or_404
+# pyrefly: ignore [missing-import]
 from django.contrib.auth.decorators import login_required
+# pyrefly: ignore [missing-import]
 from django.contrib import messages
+# pyrefly: ignore [missing-import]
 from django.db.models import Q
+# pyrefly: ignore [missing-import]
 from django.http import FileResponse
 from .models import Document
 from .forms import DocumentForm, LegacyDocumentForm
@@ -47,6 +52,7 @@ def upload_document(request):
 @login_required
 def upload_ancienne_archive(request):
     if not request.user.is_archiviste():
+        # pyrefly: ignore [missing-import]
         from django.core.exceptions import PermissionDenied
         raise PermissionDenied
     
@@ -78,6 +84,10 @@ def modifier_document(request, pk):
 @login_required
 def archiver_document(request, pk):
     doc = get_object_or_404(Document, pk=pk)
+    if request.user.is_archiviste() and doc.archiviste != request.user:
+        messages.error(request, "Vous n'avez pas la permission d'archiver ce document.")
+        return redirect('liste_documents')
+    
     doc.statut = 'archive'
     doc.save()
     Historique.objects.create(utilisateur=request.user, action='archivage', description=f'Archivage du document "{doc.titre}"')
@@ -87,6 +97,10 @@ def archiver_document(request, pk):
 @login_required
 def supprimer_document(request, pk):
     doc = get_object_or_404(Document, pk=pk)
+    if request.user.is_archiviste() and doc.archiviste != request.user:
+        messages.error(request, "Vous n'avez pas la permission de supprimer ce document.")
+        return redirect('liste_documents')
+        
     if request.method == 'POST':
         titre = doc.titre
         doc.statut = 'supprime'
@@ -137,6 +151,7 @@ def recherche_documents(request):
 @login_required
 def consultation_archives(request):
     if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
         from django.core.exceptions import PermissionDenied
         raise PermissionDenied
     
