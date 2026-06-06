@@ -1,10 +1,16 @@
 import json
 import datetime
+# pyrefly: ignore [missing-import]
 from django.shortcuts import render, redirect, get_object_or_404
+# pyrefly: ignore [missing-import]
 from django.contrib.auth import login, logout
+# pyrefly: ignore [missing-import]
 from django.contrib.auth.decorators import login_required
+# pyrefly: ignore [missing-import]
 from django.contrib import messages
+# pyrefly: ignore [missing-import]
 from django.db.models import Q, Count
+# pyrefly: ignore [missing-import]
 from django.db.models.functions import TruncMonth
 from .models import User
 from .forms import ConnexionForm, UserCreateForm, UserEditForm, ProfilForm
