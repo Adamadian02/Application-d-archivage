@@ -11,4 +11,5 @@ urlpatterns = [
     path('documents/<int:pk>/telecharger/', views.telecharger_document, name='telecharger_document'),
     path('recherche/', views.recherche_documents, name='recherche_documents'),
     path('archives/', views.consultation_archives, name='consultation_archives'),
+    path('documents/upload-ancienne/', views.upload_ancienne_archive, name='upload_ancienne_archive'),
 ]

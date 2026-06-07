@@ -6,7 +6,7 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">Gestion des Documents</h1>
-    <p class="page-subtitle">{{ documents.count }} document(s) trouvé(s)</p>
+    <p class="page-subtitle">{{ total_count }} document(s) trouvé(s)</p>
   </div>
   <div class="page-actions">
     <a href="{% url 'upload_document' %}" class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Uploader</a>
@@ -48,64 +48,101 @@
   </div>
 </div>
 
-<!-- Table -->
-<div class="table-container">
-  {% if documents %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th><input type="checkbox" class="form-check-input"></th>
-          <th>Document</th>
-          <th>Catégorie</th>
-          <th>Confidentialité</th>
-          <th>Statut</th>
-          <th>Date</th>
-          <th>Taille</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for doc in documents %}
-        <tr>
-          <td><input type="checkbox" class="form-check-input"></td>
-          <td>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <i class="{{ doc.get_icon }}" style="font-size:20px;"></i>
-              <div>
-                <div class="fw-500">{{ doc.titre|truncatechars:40 }}</div>
-                {% if doc.tags.exists %}
-                  <div class="mt-1">{% for tag in doc.tags.all %}<span class="badge bg-light text-secondary border me-1" style="font-size:10px;">{{ tag.nom }}</span>{% endfor %}</div>
-                {% endif %}
-              </div>
+<!-- Groupement Hiérarchique -->
+<div class="documents-grouped">
+  {% if grouped_documents %}
+    {% for year_group in grouped_documents %}
+      <div class="year-section mb-4">
+        <div class="d-flex align-items-center mb-3">
+          <div class="year-badge me-3">{{ year_group.year }}</div>
+          <div class="flex-grow-1 border-bottom" style="height: 1px; opacity: 0.1;"></div>
+        </div>
+        
+        {% for cat_group in year_group.categories %}
+          <div class="category-group mb-3 ms-4">
+            <h6 class="text-muted text-uppercase fw-bold small mb-3">
+              <i class="bi bi-folder2-open me-2 text-primary"></i> {{ cat_group.name }} ({{ cat_group.documents|length }})
+            </h6>
+            
+            <div class="table-container shadow-sm border-0">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>Document</th>
+                    <th>Confidentialité</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for doc in cat_group.documents %}
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center gap-3">
+                          <i class="{{ doc.get_icon }} text-primary fs-5"></i>
+                          <div>
+                            <div class="fw-500 text-sm">{{ doc.titre|truncatechars:45 }}</div>
+                            <div class="text-xs text-muted">{{ doc.created_at|date:"d M Y" }} • {{ doc.get_taille }}</div>
+                            {% if doc.tags.exists %}
+                              <div class="mt-1">
+                                {% for tag in doc.tags.all %}
+                                  <span class="badge bg-light text-secondary border me-1" style="font-size:10px;">{{ tag.nom }}</span>
+                                {% endfor %}
+                              </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
+                      <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
+                      <td class="text-end">
+                        <div class="table-actions justify-content-end">
+                          <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm" title="Voir"><i class="bi bi-eye"></i></a>
+                          <a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm" title="Télécharger"><i class="bi bi-download"></i></a>
+                          <a href="{% url 'modifier_document' doc.pk %}" class="btn btn-outline btn-sm" title="Modifier"><i class="bi bi-pencil"></i></a>
+                          {% if doc.statut == 'actif' %}
+                            <a href="{% url 'archiver_document' doc.pk %}" class="btn btn-outline btn-sm" title="Archiver"><i class="bi bi-archive"></i></a>
+                          {% endif %}
+                          <a href="{% url 'supprimer_document' doc.pk %}" class="btn btn-outline btn-sm text-danger" title="Supprimer"><i class="bi bi-trash"></i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
-          </td>
-          <td>{% if doc.categorie %}<span class="text-sm">{{ doc.categorie.nom }}</span>{% else %}<span class="text-muted">—</span>{% endif %}</td>
-          <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
-          <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
-          <td><span class="text-sm">{{ doc.created_at|date:"d/m/Y" }}</span></td>
-          <td><span class="text-sm text-muted">{{ doc.get_taille }}</span></td>
-          <td>
-            <div class="table-actions">
-              <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Voir"><i class="bi bi-eye"></i></a>
-              <a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Télécharger"><i class="bi bi-download"></i></a>
-              <a href="{% url 'modifier_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Modifier"><i class="bi bi-pencil"></i></a>
-              {% if doc.statut == 'actif' %}
-              <a href="{% url 'archiver_document' doc.pk %}" class="btn btn-outline btn-sm" data-bs-toggle="tooltip" title="Archiver" data-confirm="Archiver ce document ?"><i class="bi bi-archive"></i></a>
-              {% endif %}
-              <a href="{% url 'supprimer_document' doc.pk %}" class="btn btn-outline btn-sm text-danger" data-bs-toggle="tooltip" title="Supprimer"><i class="bi bi-trash"></i></a>
-            </div>
-          </td>
-        </tr>
+          </div>
         {% endfor %}
-      </tbody>
-    </table>
+      </div>
+    {% endfor %}
   {% else %}
-    <div class="empty-state">
-      <div class="empty-icon"><i class="bi bi-folder2-open"></i></div>
-      <div class="empty-title">Aucun document trouvé</div>
-      <div class="empty-text">{% if query %}Aucun résultat pour "{{ query }}"{% else %}Uploadez votre premier document{% endif %}</div>
+    <div class="empty-state text-center p-5">
+      <div class="empty-icon fs-1 text-muted opacity-25 mb-3"><i class="bi bi-folder2-open"></i></div>
+      <div class="empty-title h5">Aucun document trouvé</div>
+      <div class="empty-text text-muted">{% if query %}Aucun résultat pour "{{ query }}"{% else %}Uploadez votre premier document{% endif %}</div>
       <a href="{% url 'upload_document' %}" class="btn btn-primary mt-3"><i class="bi bi-cloud-upload"></i> Uploader</a>
     </div>
   {% endif %}
 </div>
+
+<style>
+  .year-badge {
+    background: #0d6efd;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+  }
+  .category-group {
+    border-left: 2px solid #e9ecef;
+    padding-left: 1.5rem;
+  }
+  .table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+</style>
 {% endblock %}

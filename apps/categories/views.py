@@ -1,5 +1,8 @@
+# pyrefly: ignore [missing-import]
 from django.shortcuts import render, redirect, get_object_or_404
+# pyrefly: ignore [missing-import]
 from django.contrib.auth.decorators import login_required
+# pyrefly: ignore [missing-import]
 from django.contrib import messages
 from .models import Categorie
 from .forms import CategorieForm
@@ -12,6 +15,10 @@ def liste_categories(request):
 
 @login_required
 def creer_categorie(request):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     form = CategorieForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         cat = form.save()
@@ -22,6 +29,10 @@ def creer_categorie(request):
 
 @login_required
 def modifier_categorie(request, pk):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     cat = get_object_or_404(Categorie, pk=pk)
     form = CategorieForm(request.POST or None, instance=cat)
     if request.method == 'POST' and form.is_valid():
@@ -32,6 +43,10 @@ def modifier_categorie(request, pk):
 
 @login_required
 def supprimer_categorie(request, pk):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     cat = get_object_or_404(Categorie, pk=pk)
     if request.method == 'POST':
         nom = cat.nom

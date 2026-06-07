@@ -4,30 +4,98 @@
 
 {% block content %}
 <div class="page-header">
-  <div><h1 class="page-title">Consultation des Archives</h1><p class="page-subtitle">{{ documents.count }} document(s) archivé(s)</p></div>
+  <div><h1 class="page-title">Consultation des Archives</h1><p class="page-subtitle">{{ total_count }} document(s) archivé(s)</p></div>
   <div class="page-actions"><a href="{% url 'recherche_documents' %}" class="btn btn-outline"><i class="bi bi-search"></i> Rechercher</a></div>
 </div>
 
-<div class="table-container">
-  {% if documents %}
-  <table class="table mb-0">
-    <thead><tr><th>Document</th><th>Archiviste</th><th>Catégorie</th><th>Confidentialité</th><th>Statut</th><th>Date</th><th>Actions</th></tr></thead>
-    <tbody>
-      {% for doc in documents %}
-      <tr>
-        <td><div style="display:flex;align-items:center;gap:10px;"><i class="{{ doc.get_icon }}" style="font-size:20px;"></i><div><div class="fw-500 text-sm">{{ doc.titre|truncatechars:40 }}</div><div class="text-xs text-muted">{{ doc.get_taille }}</div></div></div></td>
-        <td><span class="text-sm">{{ doc.archiviste.get_full_name|default:"—" }}</span></td>
-        <td><span class="text-sm">{{ doc.categorie|default:"—" }}</span></td>
-        <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
-        <td><span class="badge-custom badge-{{ doc.statut }}">{{ doc.get_statut_display }}</span></td>
-        <td><span class="text-xs text-muted">{{ doc.created_at|date:"d/m/Y" }}</span></td>
-        <td><div class="table-actions"><a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a><a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a></div></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="archives-view">
+  {% if grouped_documents %}
+    {% for year_group in grouped_documents %}
+      <div class="year-section mb-4">
+        <div class="d-flex align-items-center mb-3">
+          <div class="year-badge me-3">{{ year_group.year }}</div>
+          <div class="flex-grow-1 border-bottom" style="height: 1px; opacity: 0.1;"></div>
+        </div>
+        
+        {% for cat_group in year_group.categories %}
+          <div class="category-group mb-3 ms-4">
+            <h6 class="text-muted text-uppercase fw-bold small mb-3">
+              <i class="bi bi-folder2-open me-2 text-primary"></i> {{ cat_group.name }} ({{ cat_group.documents|length }})
+            </h6>
+            
+            <div class="table-container shadow-sm border-0">
+              <table class="table mb-0">
+                <thead>
+                  <tr>
+                    <th>Document</th>
+                    <th>Archiviste</th>
+                    <th>Confidentialité</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for doc in cat_group.documents %}
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center gap-2">
+                          <i class="{{ doc.get_icon }} text-primary fs-5"></i>
+                          <div>
+                            <div class="fw-500 text-sm">{{ doc.titre|truncatechars:50 }}</div>
+                            <div class="text-xs text-muted">{{ doc.created_at|date:"d M Y" }} • {{ doc.get_taille }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="text-sm">{% if doc.archiviste %}{{ doc.archiviste.get_full_name|default:doc.archiviste.username }}{% else %}Utilisateur supprimé{% endif %}</span></td>
+                      <td><span class="badge-custom badge-{{ doc.confidentialite }}">{{ doc.get_confidentialite_display }}</span></td>
+                      <td class="text-end">
+                        <div class="table-actions justify-content-end">
+                          <a href="{% url 'detail_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-eye"></i></a>
+                          <a href="{% url 'telecharger_document' doc.pk %}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
   {% else %}
-  <div class="empty-state"><div class="empty-icon"><i class="bi bi-archive"></i></div><div class="empty-title">Aucun document archivé</div></div>
+    <div class="empty-state text-center p-5">
+      <div class="empty-icon fs-1 text-muted opacity-25 mb-3"><i class="bi bi-archive"></i></div>
+      <div class="empty-title h5">Aucun document archivé</div>
+    </div>
   {% endif %}
 </div>
+
+<style>
+  .year-badge {
+    background: #0d6efd;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+  }
+  .category-group {
+    border-left: 2px solid #e9ecef;
+    padding-left: 1.5rem;
+  }
+  .table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .table thead th {
+    background: #f8f9fa;
+    border-top: none;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+  }
+</style>
 {% endblock %}

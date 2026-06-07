@@ -112,6 +112,10 @@ def dashboard(request):
 
 @login_required
 def gestion_utilisateurs(request):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     query = request.GET.get('q', '')
     users = User.objects.all()
     if query:
@@ -120,6 +124,10 @@ def gestion_utilisateurs(request):
 
 @login_required
 def creer_utilisateur(request):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     form = UserCreateForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save()
@@ -130,6 +138,10 @@ def creer_utilisateur(request):
 
 @login_required
 def modifier_utilisateur(request, pk):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     user = get_object_or_404(User, pk=pk)
     form = UserEditForm(request.POST or None, instance=user)
     if request.method == 'POST' and form.is_valid():
@@ -141,6 +153,10 @@ def modifier_utilisateur(request, pk):
 
 @login_required
 def supprimer_utilisateur(request, pk):
+    if not request.user.is_admin():
+        # pyrefly: ignore [missing-import]
+        from django.core.exceptions import PermissionDenied
+        raise PermissionDenied
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
         username = user.username
