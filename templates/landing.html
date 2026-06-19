@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GED Universitaire | Système d'Archivage Intelligent</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #0f172a;
+            --bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.8);
+            --accent: #0ea5e9;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--secondary);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar */
+        .landing-nav {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: white !important;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-nav:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            position: relative;
+            background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-img-container {
+            position: relative;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-img:hover {
+            transform: scale(1.02);
+        }
+
+        .hero-badge {
+            position: absolute;
+            background: white;
+            padding: 12px 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .badge-1 { top: 20%; left: -40px; animation: float 6s infinite ease-in-out; }
+        .badge-2 { bottom: 20%; right: -20px; animation: float 6s infinite ease-in-out 1s; }
+
+        /* Features */
+        .section-tag {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--secondary);
+            padding: 100px 0;
+            border-radius: 40px;
+            margin: 100px 20px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(to right, rgba(37, 99, 235, 0.1), transparent);
+            transform: rotate(30deg);
+        }
+
+        .btn-large {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 0;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 991px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-img-container { margin-top: 50px; }
+            .badge-1, .badge-2 { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="landing-nav">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="#" class="brand-logo">
+                <img src="/media/photos/logo.jpeg" alt="Logo" style="height: 40px; border-radius: 8px; margin-right: 10px;">
+                GED Universitaire
+            </a>
+            <div class="d-flex gap-4 align-items-center">
+                <a href="#features" class="text-decoration-none text-dark fw-500 d-none d-md-block">Fonctionnalités</a>
+                <a href="{% url 'connexion' %}" class="btn-nav">Mon Espace</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <span class="section-tag">Solution d'archivage moderne</span>
+                    <h1 class="hero-title">Organisez vos documents intelligemment.</h1>
+                    <p class="hero-text">Simplifiez la gestion de vos archives universitaires avec une plateforme sécurisée, collaborative et performante. Accédez à vos documents en un clic.</p>
+                    <div class="d-flex gap-3">
+                        <a href="{% url 'connexion' %}" class="btn btn-primary btn-large">Commencer maintenant</a>
+                        <a href="#features" class="btn btn-outline-secondary btn-large">Découvrir</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-img-container">
+                        <div class="hero-badge badge-1">
+                            <i class="bi bi-shield-check text-success fs-4"></i>
+                            <div>
+                                <div style="font-size: 14px">Sécurité Maximale</div>
+                                <div style="font-size: 11px; color: #64748b">Protection PostgreSQL</div>
+                            </div>
+                        </div>
+                        <img src="/media/photos/banner.png" alt="Dashboard Preview" class="hero-img">
+                        <div class="hero-badge badge-2">
+                            <i class="bi bi-clock-history text-primary fs-4"></i>
+                            <div>
+                                <div style="font-size: 14px">Archives Historiques</div>
+                                <div style="font-size: 11px; color: #64748b">Gestion multi-années</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <span class="section-tag">Pourquoi nous choisir ?</span>
+                <h2 class="fw-800 fs-1">Une gestion simplifiée au quotidien</h2>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-search"></i></div>
+                        <h4 class="fw-700">Recherche Puissante</h4>
+                        <p class="text-muted">Retrouvez n'importe quel document instantanément grâce à notre moteur de recherche multicritères.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-layers"></i></div>
+                        <h4 class="fw-700">Organisation Intuitive</h4>
+                        <p class="text-muted">Classement hiérarchique par années et catégories pour une structure toujours impeccable.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
+                        <h4 class="fw-700">Accès Rapide</h4>
+                        <p class="text-muted">Gérez vos documents personnels ou archives globales avec une interface fluide et responsive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container position-relative z-1">
+            <h2 class="fs-1 fw-800 mb-4">Prêt à digitaliser vos archives ?</h2>
+            <p class="fs-5 opacity-75 mb-5 mx-auto" style="max-width: 600px;">Rejoignez les archivistes qui utilisent déjà GED Universitaire pour sécuriser leur patrimoine documentaire.</p>
+            <a href="{% url 'connexion' %}" class="btn btn-light btn-large text-primary">Accéder à mon espace</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 GED Universitaire. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

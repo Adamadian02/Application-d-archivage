@@ -17,6 +17,11 @@ from .forms import ConnexionForm, UserCreateForm, UserEditForm, ProfilForm
 from apps.documents.models import Document
 from apps.historique.models import Historique
 
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'landing.html')
+
 def connexion(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
